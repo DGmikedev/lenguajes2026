@@ -1,12 +1,13 @@
 ### ACTUALIZACIÓN 
 
 
-## Estructura planeada
+## Estructura
 
-### PHP
 [PHP](Php/README_PHP.md)
 
 
+
+``` js
 lenguajes/
 │
 ├── php/
@@ -44,3 +45,5 @@ lenguajes/
 │   └── ...
 │
 └── README.md
+
+```
