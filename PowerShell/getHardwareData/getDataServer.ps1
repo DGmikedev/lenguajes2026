@@ -1,6 +1,11 @@
 
 # Peticion
+
 # Hardware	                    CPU, núcleos, uso de CPU, RAM total/usada, discos, espacio libre, seriales, temperatura (si aplica)
+
+
+
+
 # Sistema Operativo	            versión de Windows Server, build, hostname, arquitectura, uptime, zona horaria
 # Red	                        IP, gateway, DNS, MAC Address, interfaces activas, puertos abiertos
 # Procesos y servicios	        procesos activos, consumo de recursos, servicios críticos levantados
@@ -12,3 +17,6 @@
 # Rendimiento	                bottlenecks de CPU, RAM, disco, red
 # Respaldos	                    estado de backups, snapshots, tareas programadas
 # Virtualización	            si es VM, Hyper-V, VMware, recursos asignados
+
+
+Get-CimInstance -Query "SELECT Name, VirtualSize from Win32_Process WHERE name LIKE 'P%'"

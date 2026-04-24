@@ -1,0 +1,3 @@
+gitignore
+Rust/hardware/getHarwareData>/target/
+Rust/hardware/getHarwareData>/Cargo.lock
