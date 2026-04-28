@@ -6,6 +6,14 @@ param( [string]$Device,
 
 $ObjOut = [PScustomObject]@{}
 
+$DocRepo = "RepositoryDocs"
+$PathPadre = Split-Path $PSScriptRoot -Parent
+
+Write-Line $PathPadre
+
+$NameFile = ""
+$Full_Path = ""
+
 if($Device -eq "cpu"){
     $PRO = Get-CimInstance Win32_Processor | 
     Select-Object Caption, 
@@ -17,17 +25,20 @@ if($Device -eq "cpu"){
     MaxClockSpeed,SocketDesignation, NumberOfCores, 
     NumberOfLogicalProcessors
 
-    #| 
-    #ConvertTo-Json -Depth 3 | Out-File cpuInfor.json
+    $NameFile = "cpuInfor.json"
+
+    $Full_Path = Join-Path $Docrepo $NameFile                # Carpeta contenedora
+    $Full_Path = Join-Path  (Get-Location).Path $Full_Path   # Adjunta el Localización en servidor
+    $Full_Path = $Full_Path
+
+    Write-Host $Full_Path
+
 }else{
     Write-Host "opcion no valida"
 }
 
-if($Out -eq "json"){
-    $PRO | ConvertTo-Json -Depth 3 | Out-File cpuInfor.json
-}else{
-    Write-Host $PRO
-}
+
+
 
 
 #$objOut | -ConvertTo-Json -Depth 3 |
