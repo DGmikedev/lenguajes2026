@@ -11,6 +11,5 @@ function Getcpu{
     NumberOfLogicalProcessors
 }
 
-
 Export-ModuleMember -Function Getcpu
  

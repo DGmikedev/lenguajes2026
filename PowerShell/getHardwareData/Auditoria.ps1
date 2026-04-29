@@ -2,7 +2,7 @@ param(
     [string]$Tipo
 )
 
-# Este Script Obtiene la informaci�n de CPU y la manda imprimir en un formato determinado
+# Este Script Obtiene la información de CPU y la manda imprimir en un formato determinado
 # en el directorio repositorio para que los palicativos de auditoria puedan consulatrla
 
 
@@ -19,6 +19,14 @@ Import-Module -Name "$localpath\getDataCPUModule.psm1"
 Import-Module -Name "$localpath\getDataRAMModule.psm1"
 # Module Get Data Disk
 Import-Module -Name "$localpath\getDataDISKModule.psm1"
+# Module Get Data Equipment
+Import-Module -Name "$localpath\getDataEQPModule.psm1"
+# Module Get Data MAC
+Import-Module -Name "$localpath\getDataNETModule.psm1"
+# Module Get Data Fisical Disk
+Import-Module -Name "$localpath\getDataFDISKModule.psm1"
+# Module Get Data IP Network
+Import-Module -Name "$localpath\getDataIPNTModule.psm1"
 
 
 
@@ -30,9 +38,13 @@ $OutPath = "$PathRepository\auditoria"
 
 # Use of Getcpu function "get cpu data"
 $ObjectSend = [PSCustomObject]@{
-    CPU = Getcpu
-    RAM = Getram 
-    DISC = Getdisk
+    CPU    = Getcpu
+    RAM    = Getram 
+    DISC   = Getdisk
+    EQPMET = Geteqp
+    NET    = Getnetadp
+    FDISK  = Getfdisk
+    IPCNF  = Getipnet 
 }
 
 
