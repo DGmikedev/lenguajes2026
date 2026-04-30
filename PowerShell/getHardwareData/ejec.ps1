@@ -2,15 +2,21 @@ param(
     [string]$t 
 )
 
-remove-module getDataCPUModule
-remove-module getDataRAMModule
-remove-module getDataDISKModule
-remove-module getDataEQPModule
-remove-module getDataNETModule
-remove-module getDataFDISKModule
-remove-module getDataIPNTModule
-remove-module getDataUIDModule
-remove-module exportCstmObjctToJsn
-remove-module getDataTimeZoneServer
+try{
+    remove-module getDataCPUModule
+    remove-module getDataRAMModule
+    remove-module getDataDISKModule
+    remove-module getDataEQPModule
+    remove-module getDataNETModule
+    remove-module getDataFDISKModule
+    remove-module getDataIPNTModule
+    remove-module getDataUIDModule
+    remove-module exportCstmObjctToJsn
+    remove-module getDataTimeZoneServer
+    .\Auditoria.ps1 -depth $t
+}catch{
+    .\Auditoria.ps1 -depth $t
+}
 
-.\Auditoria.ps1 -depth $t
+
+

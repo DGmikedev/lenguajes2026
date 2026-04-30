@@ -71,9 +71,9 @@ if($Eject -eq 1){
     # Path of repository Directory
     $PathRepository = "$localpathback\RepositoryDocsPS"
 
-    $date = Get-Date -Format "MMddhhmmss"
+    $date = Get-Date -Format "MMddyyyy"
     #Path of Respository with name
-    $OutPath = "$PathRepository\auditoria_$date"
+    $OutPath = "$PathRepository\auditoria_hardware"
 
     # Creating an Object 
     # Including searching of errors inside body data
@@ -87,13 +87,14 @@ if($Eject -eq 1){
         IPCNF  = if( "ERROR EN MODULO" -eq (Getipnet))    { Write-Host "ERROR EN MODULO IPCNF MAL" $Paths.IPCNF  -ForegroundColor Red | Getipnet    }else{ (Getipnet)    } 
         UUID   = if( "ERROR EN MODULO" -eq (Getuuid))     { Write-Host "ERROR EN MODULO UUID MAL"  $Paths.UUID   -ForegroundColor Red | Getuuid     }else{ (Getuuid)     } 
         TMZONE = if( "ERROR EN MODULO" -eq (Gettimezone)) { Write-Host "ERROR EN MODULO TMZONE MAL"$Paths.TMZONE -ForegroundColor Red | Gettimezone }else{ (Gettimezone) } 
+        MKDATE = Get-Date | Select-Object year, day, month
     }
 
 
     # repository Exist ??
     if( Test-Path $PathRepository ){
 
-        Write-Host "Comprobando carpeta de reporte $PathRepository"   -ForegroundColor Cyan
+        Write-Host "Comprobando carpeta de reporte $PathRepository"    -ForegroundColor Cyan
         Write-Host "Exportando Informacion"                            -ForegroundColor Cyan
 
         # Yes! Send the info to print 
@@ -124,11 +125,15 @@ if($Eject -eq 1){
 
 else{
 
-    Write-Host "NO SE PUDO CREAR INFORME DE AUDITORIA - CONSULTE LOG  " -ForegroundColor Red
+    Write-Host "NO SE PUDO CREAR INFORME DE AUDITORIA - CONSULTE LOG  "       
+    -ForegroundColor Red
 
     Write-Host $msj
 
 }
+
+$php = php -m
+$php | ConvertTo-Json
 
 # $Archivo = "C:\Reportes\log.txt"
 # Add-Content -Path $Archivo -Value "Nuevo registro"
