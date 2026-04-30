@@ -1,6 +1,7 @@
 
 function Getcpu{
-    Get-CimInstance Win32_Processor | 
+    try{
+    $cpu = Get-CimInstance Win32_Processor | 
     Select-Object Caption, 
     Description, InstallDate, Name, Status, Availability, 
     CreationClassName, DeviceID, 
@@ -9,6 +10,12 @@ function Getcpu{
     LoadPercentage,Role,Manufacturer, 
     MaxClockSpeed,SocketDesignation, NumberOfCores, 
     NumberOfLogicalProcessors
+    return $cpu
+    }catch{
+
+        return "ERROR EN MODULO"
+    }
+
 }
 
 Export-ModuleMember -Function Getcpu

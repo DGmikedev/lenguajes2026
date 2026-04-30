@@ -8,7 +8,7 @@ function Export-Data{
     # Select Type of exportation
     if($OutType -eq "json"){
 
-        $DataIn | ConvertTo-Json -Depth 6 | Out-File -Encoding UTF8 "$OutPath.json"
+        $DataIn | ConvertTo-Json -Depth 3 | Out-File -Encoding UTF8 "$OutPath.json"
 
         # out to return 
         Write-Host "1"
