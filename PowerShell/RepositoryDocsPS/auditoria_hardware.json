@@ -1,0 +1,223 @@
+﻿{
+    "CPU":  {
+                "Caption":  "Intel64 Family 6 Model 60 Stepping 3",
+                "Description":  "Intel64 Family 6 Model 60 Stepping 3",
+                "InstallDate":  null,
+                "Name":  "Intel(R) Xeon(R) CPU E3-1225 v3 @ 3.20GHz",
+                "Status":  "OK",
+                "Availability":  3,
+                "CreationClassName":  "Win32_Processor",
+                "DeviceID":  "CPU0",
+                "SystemCreationClassName":  "Win32_ComputerSystem",
+                "SystemName":  "DESKTOP-JEFE",
+                "AddressWidth":  64,
+                "CurrentClockSpeed":  3201,
+                "DataWidth":  64,
+                "LoadPercentage":  7,
+                "Role":  "CPU",
+                "Manufacturer":  "GenuineIntel",
+                "MaxClockSpeed":  3201,
+                "SocketDesignation":  "SOCKET 0",
+                "NumberOfCores":  4,
+                "NumberOfLogicalProcessors":  4
+            },
+    "RAM":  [
+                {
+                    "Capacity":  8589934592
+                },
+                {
+                    "Capacity":  4294967296
+                },
+                {
+                    "Capacity":  4294967296
+                }
+            ],
+    "DISC":  [
+                 {
+                     "DeviceID":  "C:",
+                     "Size":  970084839424,
+                     "FreeSpace":  637001809920
+                 },
+                 {
+                     "DeviceID":  "D:",
+                     "Size":  119225618432,
+                     "FreeSpace":  76806033408
+                 },
+                 {
+                     "DeviceID":  "E:",
+                     "Size":  535805952,
+                     "FreeSpace":  535769088
+                 },
+                 {
+                     "DeviceID":  "F:",
+                     "Size":  28595712000,
+                     "FreeSpace":  19087413248
+                 },
+                 {
+                     "DeviceID":  "G:",
+                     "Size":  null,
+                     "FreeSpace":  null
+                 }
+             ],
+    "EQPMET":  {
+                   "WindowsInstallDateFromRegistry":  "\/Date(1708253417000)\/",
+                   "WindowsProductName":  "Windows 10 Home",
+                   "WindowsRegisteredOwner":  "El JEFE",
+                   "WindowsSystemRoot":  "C:\\Windows",
+                   "BiosBIOSVersion":  [
+                                           "LENOVO - 1290",
+                                           "LENOVO BIOS Rev: FBKT41A 0.0"
+                                       ],
+                   "BiosListOfLanguages":  [
+                                               "en|US|iso8859-1",
+                                               "fr|FR|iso8859-1",
+                                               "zh|CN|unicode"
+                                           ],
+                   "CsDNSHostName":  "DESKTOP-JEFE",
+                   "CsDomain":  "WORKGROUP",
+                   "CsName":  "DESKTOP-JEFE",
+                   "CsNetworkAdapters":  [
+                                             {
+                                                 "Description":  "Intel(R) Ethernet Connection I217-LM",
+                                                 "ConnectionID":  "Ethernet",
+                                                 "DHCPEnabled":  null,
+                                                 "DHCPServer":  null,
+                                                 "ConnectionStatus":  7,
+                                                 "IPAddresses":  null
+                                             },
+                                             {
+                                                 "Description":  "Realtek RTL8192EU Wireless LAN 802.11n USB 2.0 Network Adapter",
+                                                 "ConnectionID":  "Wi-Fi",
+                                                 "DHCPEnabled":  true,
+                                                 "DHCPServer":  "192.168.1.254",
+                                                 "ConnectionStatus":  2,
+                                                 "IPAddresses":  [
+                                                                     "192.168.1.191",
+                                                                     "fe80::3ec1:22cd:3e7d:ff1d",
+                                                                     "2806:105e:1d:2b20:68a6:e7e3:1e2:a52f",
+                                                                     "2806:105e:1d:2b20:be70:c36b:e163:5a18",
+                                                                     "2806:105e:1d:2b20::3"
+                                                                 ]
+                                             }
+                                         ],
+                   "CsProcessors":  [
+                                        {
+                                            "Name":  "Intel(R) Xeon(R) CPU E3-1225 v3 @ 3.20GHz",
+                                            "Manufacturer":  "GenuineIntel",
+                                            "Description":  "Intel64 Family 6 Model 60 Stepping 3",
+                                            "Architecture":  9,
+                                            "AddressWidth":  64,
+                                            "DataWidth":  64,
+                                            "MaxClockSpeed":  3201,
+                                            "CurrentClockSpeed":  3201,
+                                            "NumberOfCores":  4,
+                                            "NumberOfLogicalProcessors":  4,
+                                            "ProcessorID":  "BFEBFBFF000306C3",
+                                            "SocketDesignation":  "SOCKET 0",
+                                            "ProcessorType":  3,
+                                            "Role":  "CPU",
+                                            "Status":  "OK",
+                                            "CpuStatus":  1,
+                                            "Availability":  3
+                                        }
+                                    ],
+                   "CsSystemType":  "x64-based PC",
+                   "CsUserName":  "DESKTOP-JEFE\\El JEFE",
+                   "CsWorkgroup":  "WORKGROUP",
+                   "OsOperatingSystemSKU":  101,
+                   "OsVersion":  "10.0.19045",
+                   "OsSystemDirectory":  "C:\\Windows\\system32",
+                   "OsSystemDrive":  "C:",
+                   "OsWindowsDirectory":  "C:\\Windows",
+                   "OsManufacturer":  "Microsoft Corporation",
+                   "OsMuiLanguages":  [
+                                          "es-MX",
+                                          "en-US",
+                                          "es-ES"
+                                      ],
+                   "TimeZone":  "(UTC-06:00) Guadalajara, Ciudad de México, Monterrey"
+               },
+    "NET":  [
+                {
+                    "Name":  "Ethernet",
+                    "MacAddress":  "FC-4D-D4-D2-4A-53",
+                    "InterfaceDescription":  "Intel(R) Ethernet Connection I217-LM",
+                    "Status":  "Disconnected",
+                    "LinkSpeed":  "0 bps"
+                },
+                {
+                    "Name":  "Wi-Fi",
+                    "MacAddress":  "00-EB-D8-0A-11-B8",
+                    "InterfaceDescription":  "Realtek RTL8192EU Wireless LAN 802.11n USB 2.0 Network Adapter",
+                    "Status":  "Up",
+                    "LinkSpeed":  "144.4 Mbps"
+                }
+            ],
+    "FDISK":  [
+                  {
+                      "Caption":  "ST1000DM003-1CH162",
+                      "partitions":  4,
+                      "Size":  1000202273280,
+                      "Model":  "ST1000DM003-1CH162"
+                  },
+                  {
+                      "Caption":  "ST3160815AS",
+                      "partitions":  3,
+                      "Size":  159899443200,
+                      "Model":  "ST3160815AS"
+                  }
+              ],
+    "IPCNF":  {
+                  "IPV4":  [
+                               {
+                                   "InterfaceAlias":  "Conexión de área local* 10",
+                                   "IPAddress":  "169.254.69.152"
+                               },
+                               {
+                                   "InterfaceAlias":  "Conexión de área local* 9",
+                                   "IPAddress":  "169.254.244.25"
+                               },
+                               {
+                                   "InterfaceAlias":  "Ethernet",
+                                   "IPAddress":  "169.254.227.176"
+                               },
+                               {
+                                   "InterfaceAlias":  "Wi-Fi",
+                                   "IPAddress":  "192.168.1.191"
+                               },
+                               {
+                                   "InterfaceAlias":  "Loopback Pseudo-Interface 1",
+                                   "IPAddress":  "127.0.0.1"
+                               }
+                           ],
+                  "ADAPTERS":  [
+                                   {
+                                       "InterfaceDescription":  "Realtek RTL8192EU Wireless LAN 802.11n USB 2.0 Network Adapter"
+                                   },
+                                   {
+                                       "InterfaceDescription":  "Intel(R) Ethernet Connection I217-LM"
+                                   }
+                               ]
+              },
+    "UUID":  {
+                 "Caption":  "Producto de sistema informático",
+                 "Description":  "Producto de sistema informático",
+                 "IdentifyingNumber":  "MJ000BWM",
+                 "Name":  "30A0A006LM",
+                 "SKUNumber":  null,
+                 "Vendor":  "LENOVO",
+                 "Version":  "ThinkStation E32",
+                 "UUID":  "04D7566C-1620-E311-A40D-FC4DD4D24A53"
+             },
+    "TMZONE":  {
+                   "Id":  "Central Standard Time (Mexico)",
+                   "DisplayName":  "(UTC-06:00) Guadalajara, Ciudad de México, Monterrey",
+                   "StandardName":  "Hora estándar central (México)",
+                   "DaylightName":  "Hora de verano central (México)"
+               },
+    "MKDATE":  {
+                   "Year":  2026,
+                   "Day":  30,
+                   "Month":  4
+               }
+}
