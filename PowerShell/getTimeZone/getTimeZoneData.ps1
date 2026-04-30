@@ -24,6 +24,3 @@ if($Out -eq "json"){
 }else{
     Write-Host "Opcion no valida"
 }
-
-
-
