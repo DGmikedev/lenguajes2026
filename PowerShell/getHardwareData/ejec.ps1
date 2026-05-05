@@ -13,7 +13,11 @@ try{
     remove-module getDataUIDModule
     remove-module exportCstmObjctToJsn
     remove-module getDataTimeZoneServer
+    remove-module Create-Document
+    
+
     .\Auditoria.ps1 -depth $t
+
 }catch{
     .\Auditoria.ps1 -depth $t
 }

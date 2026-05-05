@@ -10,9 +10,11 @@ $Eject = 1
 $msj = ""
 $localpath     = (get-Location).Path
 $localpathback = Split-Path $localpath -Parent
+$repositoryCreated = $false
+$logDcoumentCreated = $false
 
 $Paths = @{
-    EXPORT = "$localpathback\FuncionesComunes\exportCstmObjctToJsn.psm1"
+    EXPORT = "$localpathback\CommonFunctions\exportCstmObjctToJsn.psm1"
     CPU    = "$localpath\getDataCPUModule.psm1"
     RAM    = "$localpath\getDataRAMModule.psm1"
     DISC   = "$localpath\getDataDISKModule.psm1"
@@ -22,6 +24,7 @@ $Paths = @{
     IPCNF  = "$localpath\getDataIPNTModule.psm1"
     UUID   = "$localpath\getDataUIDModule.psm1"
     TMZONE = "$localpathback\getTimeZone\getDataTimeZoneServer.psm1"
+    DOCMK =  "$localpathback\CommonFunctions\toDocuments\Create-Document.psm1"
 }
 
 foreach($fls in $paths.GetEnumerator()){
@@ -32,12 +35,12 @@ foreach($fls in $paths.GetEnumerator()){
 
     if( Test-Path $fls.Value ){
 
-        Write-Host "Comprobando existencia de Archivo con modulo:  $Clave" -ForegroundColor  Green
+        Write-Host "Comprobando existencia del modulo:  $Clave" -ForegroundColor  Green
 
     }else{
 
         $Eject = 0
-        Write-Host "Comprobando existencia de Archivo con modulo:  $Clave  ERROR" -ForegroundColor  Red
+        Write-Host "Comprobando existencia del modulo:  $Clave  ERROR" -ForegroundColor  Red
         $msj = "Error al Comprobar la ruta del archivo:  $Valor"
 
     }
@@ -45,9 +48,8 @@ foreach($fls in $paths.GetEnumerator()){
 
 if($Eject -eq 1){
 
-    # Import of Common Funtions
-    Import-Module -Name "$localpathback\FuncionesComunes\exportCstmObjctToJsn.psm1"
-
+    # Import of Common Functions
+    Import-Module -Name "$localpathback\CommonFunctions\exportCstmObjctToJsn.psm1"
     # Module  Get Data CPU 
     Import-Module -Name "$localpath\getDataCPUModule.psm1"
     # Module Get Data RAM
@@ -66,10 +68,30 @@ if($Eject -eq 1){
     Import-Module -Name "$localpath\getDataUIDModule.psm1"
     # Module Get Data TimeZone
     Import-Module -Name "$localpathback\getTimeZone\getDataTimeZoneServer.psm1"
-
+    # Module Make Document
+    Import-Module -Name "$localpathback\CommonFunctions\toDocuments\Create-Document.psm1"
 
     # Path of repository Directory
     $PathRepository = "$localpathback\RepositoryDocsPS"
+
+    # Creating Log to insert events #
+    ## Testing path log
+
+    if(Test-Path -path $PathRepository){
+
+        $repositoryCreated = $true
+
+    }else{
+
+        $repositoryCreated = $false
+
+    }
+
+    
+
+
+    #$logDcoumentCreated
+
 
     $date = Get-Date -Format "MMddyyyy"
     #Path of Respository with name
@@ -92,7 +114,7 @@ if($Eject -eq 1){
 
 
     # repository Exist ??
-    if( Test-Path $PathRepository ){
+    if( $repositoryCreated ){
 
         Write-Host "Comprobando carpeta de reporte $PathRepository"    -ForegroundColor Cyan
         Write-Host "Exportando Informacion"                            -ForegroundColor Cyan
@@ -108,16 +130,20 @@ if($Eject -eq 1){
 
         # No! first create the direcotry
         New-Item -ItemType "Directory" -Path $PathRepository -Force | Out-Null
+
         Write-Host "Creando carpeta de reporte $PathRepository"       -ForegroundColor Cyan
-        
-        
+                
         Write-Host "Exportando Informacion"                           -ForegroundColor Cyan
         
         # Them send yhe info to print
         if ((Export-Objecttojson -Depth $depth  -OutPath $OutPath -DataIn $ObjectSend) -eq 1){ 
+
             Write-Host "Creacion de JSON para auditoria Exitosa"               -ForegroundColor Green
+
         }else{
+
             Write-Host "No Fue Posible crear JSON para auditoria Creado"       -ForegroundColor Red
+
         }
 
     }
@@ -126,14 +152,12 @@ if($Eject -eq 1){
 else{
 
     Write-Host "NO SE PUDO CREAR INFORME DE AUDITORIA - CONSULTE LOG  "       
-    -ForegroundColor Red
-
     Write-Host $msj
 
 }
 
-$php = php -m
-$php | ConvertTo-Json
+#$php = php -m 
+#$php | ConvertTo-Json 
 
 # $Archivo = "C:\Reportes\log.txt"
 # Add-Content -Path $Archivo -Value "Nuevo registro"
