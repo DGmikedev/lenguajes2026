@@ -1,17 +1,23 @@
-param(
-    [int]$depth
-)
-
 # Este Script Obtiene la información de CPU y la manda imprimir en un formato determinado
 # en el directorio repositorio para que los palicativos de auditoria puedan consulatrla
 
-$RetunExp = 0
+# Directory name, slash nescessary
+$nameDir = "\RepositoryDocsPS"
+
+ # Set date
+$date = Get-Date -Format "MMddyyyy"
+
+#$RetunExp = 0     <<< sospecha quitar
+
+# acm to for
 $Eject = 1
+
 $msj = ""
+
 $localpath     = (get-Location).Path
+
+# Un path con grado arriba 
 $localpathback = Split-Path $localpath -Parent
-$repositoryCreated = $false
-$logDcoumentCreated = $false
 
 $Paths = @{
     EXPORT = "$localpathback\CommonFunctions\exportCstmObjctToJsn.psm1"
@@ -24,7 +30,8 @@ $Paths = @{
     IPCNF  = "$localpath\getDataIPNTModule.psm1"
     UUID   = "$localpath\getDataUIDModule.psm1"
     TMZONE = "$localpathback\getTimeZone\getDataTimeZoneServer.psm1"
-    DOCMK =  "$localpathback\CommonFunctions\toDocuments\Create-Document.psm1"
+    DOCMK  = "$localpathback\CommonFunctions\toDocuments\New-Document.psm1"
+    DIRMK  = "$localpathback\CommonFunctions\toDocuments\New-Directory.psm1"
 }
 
 foreach($fls in $paths.GetEnumerator()){
@@ -35,7 +42,7 @@ foreach($fls in $paths.GetEnumerator()){
 
     if( Test-Path $fls.Value ){
 
-        Write-Host "Comprobando existencia del modulo:  $Clave" -ForegroundColor  Green
+        Write-Host "Comprobando existencia del modulo:  $Clave OK" -ForegroundColor  Green
 
     }else{
 
@@ -69,33 +76,42 @@ if($Eject -eq 1){
     # Module Get Data TimeZone
     Import-Module -Name "$localpathback\getTimeZone\getDataTimeZoneServer.psm1"
     # Module Make Document
-    Import-Module -Name "$localpathback\CommonFunctions\toDocuments\Create-Document.psm1"
+    Import-Module -Name "$localpathback\CommonFunctions\toDocuments\New-Document.psm1"
+    # Module Make Directory
+    Import-Module -Name "$localpathback\CommonFunctions\toDocuments\New-Directory.psm1"
 
-    # Path of repository Directory
-    $PathRepository = "$localpathback\RepositoryDocsPS"
+   
+    # Setting Repository of Docs
+    $PathRepository = New-Directory -path $localpathback -nameDir $nameDir | ConvertFrom-JSON
 
-    # Creating Log to insert events #
-    ## Testing path log
+    if($PathRepository.RESULTADO){
 
-    if(Test-Path -path $PathRepository){
-
-        $repositoryCreated = $true
+        Write-Host "Repositorio Creado en: " $PathRepository.PATH         -ForegroundColor Green
 
     }else{
 
-        $repositoryCreated = $false
-
+        Write-Host "Hubo un error al crear el repositorio de documentos"  -ForegroundColor Red
+        Exit 1
     }
+
+
+    # # Setting Log Repository
+    # $log = Join-Path $PathRepository.PATH "\log\"
+# 
+    # $PathLogRepository = New-Directory -path $log.PATH -nameDir $nameDir | ConvertFrom-JSON
+# 
+    # #Path of Respository with name
+    # $PathReportWName= Join-Path $PathRepository.PATH "\auditoria_hardware"
+# 
+    # 
+    # # Setting LOG document
+    # $log = Join-Path $PathRepository.PATH "\log\"
+# 
+    # New-Document -name "log_auditoria_hardware_$date.txt" -path $PathLogRepository  -value "Hola mndo"
 
     
 
-
-    #$logDcoumentCreated
-
-
-    $date = Get-Date -Format "MMddyyyy"
-    #Path of Respository with name
-    $OutPath = "$PathRepository\auditoria_hardware"
+    Write-Host "Compilando la informacion"                                 -ForegroundColor Cyan
 
     # Creating an Object 
     # Including searching of errors inside body data
@@ -112,41 +128,18 @@ if($Eject -eq 1){
         MKDATE = Get-Date | Select-Object year, day, month
     }
 
+    Write-Host "Exportando Informacion"                                 -ForegroundColor Cyan
 
-    # repository Exist ??
-    if( $repositoryCreated ){
+    if ((Export-Objecttojson -OutPath $PathReportWName -DataIn $ObjectSend) -eq 1){ 
 
-        Write-Host "Comprobando carpeta de reporte $PathRepository"    -ForegroundColor Cyan
-        Write-Host "Exportando Informacion"                            -ForegroundColor Cyan
-
-        # Yes! Send the info to print 
-        if ((Export-Objecttojson -Depth $depth  -OutPath $OutPath -DataIn $ObjectSend) -eq 1){ 
-            Write-Host "Creacion de JSON para auditoria Exitosa"        -ForegroundColor Green
-        }else{
-            Write-Host "No Fue Posible crear JSON para auditoria"        -ForegroundColor red
-        }
+        Write-Host "Creacion de JSON para auditoria Exitosa $PathReportWName.json"        -ForegroundColor Green
 
     }else{
 
-        # No! first create the direcotry
-        New-Item -ItemType "Directory" -Path $PathRepository -Force | Out-Null
-
-        Write-Host "Creando carpeta de reporte $PathRepository"       -ForegroundColor Cyan
-                
-        Write-Host "Exportando Informacion"                           -ForegroundColor Cyan
-        
-        # Them send yhe info to print
-        if ((Export-Objecttojson -Depth $depth  -OutPath $OutPath -DataIn $ObjectSend) -eq 1){ 
-
-            Write-Host "Creacion de JSON para auditoria Exitosa"               -ForegroundColor Green
-
-        }else{
-
-            Write-Host "No Fue Posible crear JSON para auditoria Creado"       -ForegroundColor Red
-
-        }
+        Write-Host "No Fue Posible crear JSON para auditoria"        -ForegroundColor red
 
     }
+
 } # endIf
 
 else{
@@ -155,6 +148,9 @@ else{
     Write-Host $msj
 
 }
+
+
+
 
 #$php = php -m 
 #$php | ConvertTo-Json 

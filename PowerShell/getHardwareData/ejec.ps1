@@ -13,7 +13,8 @@ try{
     remove-module getDataUIDModule
     remove-module exportCstmObjctToJsn
     remove-module getDataTimeZoneServer
-    remove-module Create-Document
+    remove-module New-Document
+    remove-module New-Directory
     
 
     .\Auditoria.ps1 -depth $t
