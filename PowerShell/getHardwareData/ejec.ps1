@@ -15,6 +15,7 @@ try{
     remove-module getDataTimeZoneServer
     remove-module New-Document
     remove-module New-Directory
+    remove-module Write-Document
     
 
     .\Auditoria.ps1 -depth $t
