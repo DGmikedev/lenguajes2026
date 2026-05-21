@@ -6,4 +6,8 @@ function Gettimezone{
 
 }
 
-Export-ModuleMember Gettimezone
+function GettimeHMS{
+    Get-Date -Format "hh:MM:ss"
+}
+
+Export-ModuleMember Gettimezone, GettimeHMS

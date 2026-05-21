@@ -1,0 +1,16 @@
+==================================================================================
+LOG DE AUDITORIA EN SERVIDOR, HARDWARE Y SOFTAWARE               |  07-05-2026   |
+==================================================================================
+
+COMNPILANDO E INSERTADO INFORMACION EN JSON
+
+11:05:09 | DATA CPU INSERTADO CON EXITO
+11:05:09 | DATA MEMORIA RAM INSERTADO CON EXITO
+11:05:09 | DATA PARTICIONES INSERTADO CON EXITO
+11:05:13 | DATA EQUIPO FISICO INSERTADO CON EXITO
+11:05:13 | DATA CONFIGURACION RED-NET INSERTADO CON EXITO
+11:05:13 | DATA DISCO(S) FISICOS INSERTADO CON EXITO
+11:05:14 | DATA CONFIGURACION RED INSERTADO CON EXITO
+11:05:14 | DATA UUID INSERTADO CON EXITO
+11:05:14 | DATA TIMEZONE AJUSTADO INSERTADO CON EXITO
+11:05:14 | Creacion de JSON para auditoria Exitosa C:\Users\El JEFE\Desktop\Nueva carpeta\codigo\lenguajes2026\PowerShell\PrjctAuditoria\RepositoryDocsPS\auditoria_hardware.json
