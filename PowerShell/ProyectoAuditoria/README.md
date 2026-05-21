@@ -1,4 +1,4 @@
-# PREYECTO TERMINADO EN ESTE REPOSITORIO
+# PROYECTO TERMINADO EN ESTE REPOSITORIO
 
 https://github.com/DGmikedev/auditoriawindows
 
