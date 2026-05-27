@@ -7,25 +7,89 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 
-function AllOff(){
+<#
+    Configuración de las variables 
+    del ajuste de formulario:
+    
+    setFormulary( 
+                
+                $CmbMethod       $TxtUrl,          $BtnSend,
+                $CmbBody,        $CmbHeaders,      $TextCurl,        
+                $BtnSave,        $TxtHeadersRtrn,  $TxtBodyResponse, 
+                $TxtBodyReq,     $TxtHeadersReq 
+            )  
+#>
+    function setFormulary($status){
 
-    $TxtUrl.IsEnabled = $false
-    $BtnSend.IsEnabled = $false
-    $CmbBody.IsEnabled = $false
-    $CmbHeaders.IsEnabled = $false
-    $TextCurl.IsEnabled = $false
-    $BtnSave.IsEnabled = $false
-    $TxtHeadersRtrn.IsEnabled = $false
-    $TxtBodyResponse.IsEnabled = $false
-    $TxtBodyReq.IsEnabled = $false
-    $TxtHeadersReq.IsEnabled = $false
+        $CmbMethod.IsEnabled       = $status[0]
+        $TxtUrl.IsEnabled          = $status[1]
+        $BtnSend.IsEnabled         = $status[2]
+        $CmbBody.IsEnabled         = $status[3]
+        $CmbHeaders.IsEnabled      = $status[4]
+        $TextCurl.IsEnabled        = $status[5]
+        $BtnSave.IsEnabled         = $status[6]
+        $TxtHeadersRtrn.IsEnabled  = $status[7]
+        $TxtBodyResponse.IsEnabled = $status[8]
+        $TxtBodyReq.IsEnabled      = $status[9]
+        $TxtHeadersReq.IsEnabled   = $status[10]
 
-}
+    }
+    function clearFormulary(){
+    
+        $TxtUrl.Text = ""
+        $TextCurl.Text = ""
+        $TxtHeadersRtrn.Text = ""
+        $TxtBodyResponse.Text = ""
+        $TxtBodyReq.Text = ""
+        $TxtHeadersReq.Text = ""
+        $CmbBody.SelectedIndex = 0
+        $CmbHeaders.SelectedIndex = 0
 
+    }
 
+    function setArrayStatusForm($setForm){
 
+        switch ($setForm) {
 
-<#   Traduciendo Formulario (WFP) - POWERSHELL    #>
+            "APAGADO"   { 
+                            (clearFormulary)
+                            setFormulary($true ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false, $false) 
+                        }
+
+            "SND_GET_POST" {
+                            (clearFormulary)
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
+                        }
+
+            "SND_CURL"  { 
+                            (clearFormulary)
+                            setFormulary($true ,$false ,$true ,$false ,$false ,$true ,$true ,$true ,$true ,$false, $false) 
+                        }
+
+            default { 
+                    Write-Host "ATENCION CON SELECCION: " $setForm      -ForeigroundColor Red
+            }
+        }
+
+    }
+
+    function buildRequest(){
+
+        $params = @{}
+
+        if($TxtBodyReq.Text -eq "YES"){
+            $params.Add( "Body" , $TxtBodyReq.Text)
+        }
+
+        $params.Add("Uri",              $TxtUrl.Text)
+        $params.Add("SessionVariable",  'Session')
+        $params.Add("Method",           $CmbMethod.SelectedItem.Content.ToString())
+
+        return $params
+
+    }
+
+    <#   Traduciendo Formulario (WFP) - POWERSHELL    #>
 
     $CmbMethod       = $window.FindName("CmbMethod")
     $TxtUrl          = $window.FindName("TxtUrl")
@@ -39,110 +103,124 @@ function AllOff(){
     $TxtBodyReq      = $window.FindName("TxtBodyReq")
     $TxtHeadersReq   = $window.FindName("TxtHeadersReq")
 
-
-    <# PRIMER DESPLIEGUE DE FORMULARIO #>
-    (AllOff)
+    <#  PRIMER DESPLIEGUE DE FORMULARIO 
+        TODO APAGADO
+    #>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
- <#
+    setArrayStatusForm("APAGADO")
 
 
-
-
-
-
-$btnSend.Add_Click({
-
-    $headers_r = ""
-
-    try{
-
-        # Aplicando Curl o Invoke-WebRequest
-        $Response = Invoke-WebRequest -Uri $url.Text -ErrorAction Stop
-
-
-
-        # tranforma el json que llega y lo reconfigura para la visualización 
-        # Es para poner un estilo de prety de forma facíl y local 
-        $json = $Response | ConvertFrom-JSON | ConvertTo-JSON -Depth 10
-        $BlocTextResponse.Text = $json
-
+    $CmbMethod.Add_SelectionChanged({
         
+        switch($CmbMethod.SelectedItem.Content){
 
+            "NO"  { setArrayStatusForm("APAGADO") }
+
+            "GET" { setArrayStatusForm("SND_GET_POST") }
+
+            "POST" { setArrayStatusForm("SND_GET_POST") }
+
+            "CURL" { setArrayStatusForm("SND_CURL") }
+
+            default { Write-Host "SELECCION - DEAFULT"  }
+        }
+
+    })
+
+    $CmbBody.Add_SelectionChanged({
+
+        switch($CmbBody.SelectedItem.Content){
+            "YES"   { 
+                $TxtBodyReq.IsEnabled = $true
+                $TxtBodyReq.Text = ""
+             }
+            "NO"    {
+                $TxtBodyReq.Text = ""
+                $TxtBodyReq.IsEnabled = $false
+                
+            }
+            default {}
+        }
         
-       
+    })
 
-    }catch{
+    $CmbHeaders.Add_SelectionChanged({
 
-        $json = $_.Exception.Message
-        $BlocTextResponse.Text = $json
-
-        $headers_r = "=====================`n"
-        $headers_r += "ESTATUS CODE:`n"
-        $headers_r += "SIN EXITO EN LA REQUEST"
-        $headers_r += "`n=====================`n`n"
-        $BlocTextHeadersReturn.Text = $headers_r
-
-    }
-
-    # Obteniendo las cabeceras de retorno
-    # Y se le da formato todo en una sola línea de data
-    # con saltos.
-        $head = $Response.Headers.GetEnumerator()
-       
-
-
+        switch($CmbHeaders.SelectedItem.Content){
+            "YES"   { 
+                $TxtHeadersReq.IsEnabled = $true
+                $TxtHeadersReq.Text = ""
+             }
+            "NO"    {
+                $TxtHeadersReq.Text = ""
+                $TxtHeadersReq.IsEnabled = $false
+                
+            }
+            default {}
+        }
         
- $headers_r = "=====================`n"
-        $headers_r += "ESTATUS CODE:`n"
-        $headers_r += "SIN EXITO EN LA REQUEST"
-        $headers_r += "`n=====================`n`n"
-        $BlocTextHeadersReturn.Text = $headers_r
+    })
 
-       
-
-        
-
-
-        foreach($header in $head){
     
-            $Nombre = $header.Key
-            $Valor  = $header.Value
 
-            $headers_r += "HEADER : [ $Nombre ] `n"  
-            $headers_r += "VALOR : [ $Valor ]"
-            $headers_r += "`n=====================`n"
+    
+    $BtnSend.Add_Click({
+
+        [hashtable]$paramsReturned = (buildRequest)
+        $responseArr = @{}
+
+        try{
+
+            $response = Invoke-WebRequest @paramsReturned -ErrorAction Stop
+
+            $responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
+
+            $responseArr.Add("BodyResponse", $responseBody)
+
+            $responseArr.Add("Status",       $response.StatusCode)
+
+
+            $TxtBodyResponse.text = $responseArr.BodyResponse
+
+
+            Write-Host $response.StatusCode
+
+        }catch{
+
+            $msg = $_.Exception.Message
 
         }
 
-        $BlocTextHeadersReturn.Text = $headers_r
-  
+    })
+
+
+
+
+
+    
+        
+
+    # $BtnSend
+    # $CmbBody
+    # $CmbHeaders
+    # $TextCurl
+    # $BtnSave
+    # $TxtHeadersRtrn
+    # $TxtBodyResponse
+    # $TxtHeadersReq
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 
-})
+
+
 
 $window.ShowDialog()
-
-#>
-
-$window.ShowDialog()
-
-<#
-$LoginParameters = @{
-    Uri             = 'https://www.contoso.com/login/'
-    SessionVariable = 'Session'
-    Method          = 'POST'
-    Body            = @{
-        User     = 'jdoe'
-        Password = 'P@S$w0rd!'
-    }
-}
-#>
