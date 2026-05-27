@@ -6,19 +6,57 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
-# Se Obtienen los valores del formulario
 
-$url = $window.FindName("TxtUrl")
+function AllOff(){
 
-$btnSend = $window.FindName("BtnSend")
+    $TxtUrl.IsEnabled = $false
+    $BtnSend.IsEnabled = $false
+    $CmbBody.IsEnabled = $false
+    $CmbHeaders.IsEnabled = $false
+    $TextCurl.IsEnabled = $false
+    $BtnSave.IsEnabled = $false
+    $TxtHeadersRtrn.IsEnabled = $false
+    $TxtBodyResponse.IsEnabled = $false
+    $TxtBodyReq.IsEnabled = $false
+    $TxtHeadersReq.IsEnabled = $false
 
-$CmbMethod = $window.FindName("CmbMethod")
+}
 
-$BlocTextResponse = $window.FindName("BlocTextResponse")
 
-$BlocTextHeaders = $window.FindName("BlocTextHeaders")
 
-$BlocTextHeadersReturn = $window.FindName("BlocTextHeadersReturn")
+
+<#   Traduciendo Formulario (WFP) - POWERSHELL    #>
+
+    $CmbMethod       = $window.FindName("CmbMethod")
+    $TxtUrl          = $window.FindName("TxtUrl")
+    $BtnSend         = $window.FindName("BtnSend")
+    $CmbBody         = $window.FindName("CmbBody")
+    $CmbHeaders      = $window.FindName("CmbHeaders")
+    $TextCurl        = $window.FindName("TextCurl")
+    $BtnSave         = $window.FindName("BtnSave")
+    $TxtHeadersRtrn  = $window.FindName("TxtHeadersRtrn")
+    $TxtBodyResponse = $window.FindName("TxtBodyResponse")
+    $TxtBodyReq      = $window.FindName("TxtBodyReq")
+    $TxtHeadersReq   = $window.FindName("TxtHeadersReq")
+
+
+    <# PRIMER DESPLIEGUE DE FORMULARIO #>
+    (AllOff)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ <#
+
+
+
+
 
 
 $btnSend.Add_Click({
@@ -93,3 +131,18 @@ $btnSend.Add_Click({
 
 $window.ShowDialog()
 
+#>
+
+$window.ShowDialog()
+
+<#
+$LoginParameters = @{
+    Uri             = 'https://www.contoso.com/login/'
+    SessionVariable = 'Session'
+    Method          = 'POST'
+    Body            = @{
+        User     = 'jdoe'
+        Password = 'P@S$w0rd!'
+    }
+}
+#>

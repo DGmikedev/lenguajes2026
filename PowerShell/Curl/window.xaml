@@ -1,70 +1,187 @@
+<!--(?:.|\r?\n)*?-->
 <Window 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="616" Width="1248" ResizeMode="NoResize">
 
-                Title="MainWindow" Height="616" Width="1248" ResizeMode="NoResize">
-<Grid Background="#1ef3ac49">
-    <Label Content="URL:" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.237,0.477"/>
-    <TextBox Name="TxtUrl" HorizontalAlignment="Left" Margin="257,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="37"/>
-    <Button Name="BtnSend" Content="SEND" Margin="993,4,0,529" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="213" BorderBrush="#FFD0FAE5" Background="#FFD0FAE5"/>
-    <ComboBox Name="CmbMethod" HorizontalAlignment="Left" Margin="79,16,0,0" VerticalAlignment="Top" Width="134" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
-        <ComboBoxItem Content="OFF"  />
-        <ComboBoxItem Content="CURL"  />
-        <ComboBoxItem Content="GET"  />
-        <ComboBoxItem Content="POST" />
-    </ComboBox>
-    <Label Content="Method" HorizontalAlignment="Left" Margin="22,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156"/>
-    <ComboBox Name="CmbBody" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
-        <ComboBoxItem Content="NO"  />
-        <ComboBoxItem Content="JSON"  />
-        <ComboBoxItem Content="XML" />
-    </ComboBox>
-    <Label Content="Body" HorizontalAlignment="Left" Margin="25,47,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156"/>
-    <Button x:Name="BtnSave" Content="SAVE" Margin="993,76,0,459" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="213" BorderBrush="#FFFEF9C2" Background="#FFFEF9C2"/>
-    <ComboBox x:Name="CmbEditHeaders" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="1">
-        <ComboBoxItem Content="YES"  />
-        <ComboBoxItem Content="NO" />
-    </ComboBox>
-    <Label Content="Edit H" HorizontalAlignment="Left" Margin="25,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="42"/>
-    <Grid Margin="22,160,32,10">
-        <ScrollViewer Margin="964,0,0,0" VerticalScrollBarVisibility="Hidden">
-            <TextBox Name = "BlocTextHeadersReturn" TextWrapping="Wrap" Text="Headers Return Here!" Width="213" Height="403" AutomationProperties.HelpText="aquí se introducen las cabeceras que se envian alapi a consultar" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
-        </ScrollViewer>
-        <ScrollViewer Margin="467,0,235,0" VerticalScrollBarVisibility="Hidden">
-            <TextBox x:Name="BlocTextResponse" TextWrapping="Wrap" Text="Response Body Here!" Width="476" Height="406" IsReadOnly="True" AutomationProperties.HelpText="Aquí se puede consultar el cuerpo que regresa el api a consultar" VerticalScrollBarVisibility="Auto"/>
-        </ScrollViewer>
-        <ScrollViewer Margin="199,0,732,0" VerticalScrollBarVisibility="Hidden">
-            <TextBox TextWrapping="Wrap" Text="Body Here!" Width="231" Height="406" AutomationProperties.HelpText="Aquí se introducen el body de la consulta" AcceptsReturn="True"/>
-        </ScrollViewer>
-        <ScrollViewer Margin="10,0,1000,0" VerticalScrollBarVisibility="Hidden">
-            <TextBox TextWrapping="Wrap" Text="Headers Here!" Width="165" Height="403" AcceptsReturn="True"/>
-        </ScrollViewer>
+      
+        
+    <!-- Incia Formulario 
+        Grilla que encierra la aplicación 
+    -->
+    <Grid Background="#FEF3C6"> <!-- Color del Formulario -->
+
+        <!-- LABEL: Method -->
+        <Label Content="Method" HorizontalAlignment="Left" Margin="22,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156"/>
+
+        <!--COMBO: Method 
+            Selecciona que tipo de verbo se manda a la request ó 
+            si se selecciona CURL se desactivan los controles y solo se mada 
+            el Texto (comando curl) que se encuentra en el TEXT-BOX: TextCurl 
+        --> 
+        <ComboBox Name="CmbMethod" HorizontalAlignment="Left" Margin="79,16,0,0" VerticalAlignment="Top" Width="134" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
+            <ComboBoxItem Content="NO"  />
+            <ComboBoxItem Content="GET"  />
+            <ComboBoxItem Content="POST" />
+            <ComboBoxItem Content="CURL" />
+        </ComboBox>
+
+        <!-- LABEL: URL -->
+        <Label Content="URL:" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.237,0.477"/>
+    
+        <!--TEXT-BOX: TxtUrl 
+            Aquí se inserta la urle de la request a ejecutar
+        -->
+        <TextBox Name="TxtUrl" HorizontalAlignment="Left" Margin="257,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="37"/>
+    
+        <!--BUTTON: BtnSend
+            Este botón se usa para enviar la request a la url objetivo (end-point)
+        -->
+        <Button Name="BtnSend" Content="SEND" Margin="993,4,0,529" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="213" BorderBrush="#FFD0FAE5" Background="#7BF1A8"/>
+
+        <!--LABEL: Body -->
+        <Label Content="Body" HorizontalAlignment="Left" Margin="25,47,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156"/>
+
+        
+        <!--COMBO: Body
+            En este combo se selecciona el cuerpo de la petición (Datos que usa la petición)
+            a enviar, al seleccionar alguna categoría se desbloque el TEXT-BOX: TextBody para
+            que se pueda ingresar el cuerop de la búsqueda, este cuerpo para esta version solo 
+            puede tener los formatos descritos en el componente (JSON y XML)
+        -->
+        <ComboBox x:Name="CmbBody" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
+            <ComboBoxItem Content="NO"  />
+            <ComboBoxItem Content="JSON"  />
+            <ComboBoxItem Content="XML" />
+        </ComboBox>
+
+        <!--LABEL: Edit H -->
+        <Label Content="Edit H" HorizontalAlignment="Left" Margin="25,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="42"/>
+
+        <!--COMBO: CmbHeaders
+            Aqui se habilita la agregación de cabeceras a enviar por la request,
+            por ejemplo paswords, tokens en el campo TEXT-BOX: HeadersText miestras
+            este seleccionado YES, de lo contrarí este TEXT-BOX se desactiva
+            evitando la edición de cabeceras y con ello solo se usaran las que
+            POWERSHELL use por defecto en el comando Invoke-WebRequest
+        -->
+        <ComboBox x:Name="CmbHeaders" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="1">
+            <ComboBoxItem Content="YES"  />
+            <ComboBoxItem Content="NO" />
+        </ComboBox>
+  <!--LISTADO DE VARIABLES FORMULARIO
+        CmbMethod
+        TxtUrl
+        BtnSend
+        CmbBody
+        CmbHeaders
+        -->
+        <!-- LABEL: CURL -->
+        <Label Content="CURL:" HorizontalAlignment="Left" Margin="210,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.237,0.477" Width="42"/>
+
+        <!--TEXT-BOX: TextCurl
+            Aquí se introduce un comando curl ya formado para hacer la requets a la url objetivo (end-point)
+        -->
+        <TextBox Name="TextCurl" HorizontalAlignment="Left" Margin="257,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="37" />
+        
+
+        <!--BUTTON: SAVE
+            Este botón guarda los parametros usados para hacer la request
+            NOTA: Los datos que guarda es la búsqueda con formato de comando cUrl que
+            salva los datos:
+                * URL
+                * MÉTODO
+                * CABECERAS
+                * CUERPO
+                * CUERPO DE LA RESPONSE  DE LA REQUEST
+                * DATOS DEL RESPONSE DE LA REQUEST
+        -->
+        <Button x:Name="BtnSave" Content="SAVE" Margin="993,76,0,459" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="213" BorderBrush="#FFFEF9C2" Background="#FF8904"/>
+
+        <!--GRILLA QUE CONTIENE LOS TEXT-BOX´s EDITABLES
+            SEND HEADERS, SEN BODY, RESPONSE BODY REQUEST, RESPONSE DATA REQUEST
+        -->
+        <Grid Margin="22,160,32,10">
+
+            <ScrollViewer Margin="964,0,0,0" VerticalScrollBarVisibility="Hidden">
+
+                <TextBox Name="TxtHeadersRtrn" TextWrapping="Wrap" Text="Headers Return Here!" Width="213" Height="403" AutomationProperties.HelpText="aquí se introducen las cabeceras que se envian alapi a consultar" IsReadOnly="True"/>
+
+            </ScrollViewer>
+
+            <ScrollViewer Margin="467,0,235,0" VerticalScrollBarVisibility="Hidden">
+
+                <TextBox Name="TxtBodyResponse" TextWrapping="Wrap" Text="Response Body Here!" Width="476" Height="406" IsReadOnly="True" AutomationProperties.HelpText="Aquí se puede consultar el cuerpo que regresa el api a consultar" VerticalScrollBarVisibility="Auto"/>
+
+            </ScrollViewer>
+
+            <ScrollViewer Margin="199,0,732,0" VerticalScrollBarVisibility="Hidden">
+
+                <TextBox Name="TxtBodyReq" TextWrapping="Wrap" Text="Body Here!" Width="231" Height="406" AutomationProperties.HelpText="Aquí se introducen el body de la consulta" AcceptsReturn="True"/>
+
+            </ScrollViewer>
+
+            <ScrollViewer Margin="10,0,1000,0" VerticalScrollBarVisibility="Hidden">
+
+                <TextBox Name="TxtHeadersReq" TextWrapping="Wrap" Text="Headers Here!" Width="168" Height="403" AcceptsReturn="True"/>
+
+            </ScrollViewer>
+
+        </Grid>
+        
+        <Label Content="SEND HEADERS" HorizontalAlignment="Left" Margin="32,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="98"/>
+        
+        <Label Content="RESPONSE BODY REQUEST" HorizontalAlignment="Left" Margin="486,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="156"/>
+        
+        <Separator HorizontalAlignment="Left" Margin="135,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="71">
+
+            <Separator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Separator.RenderTransform>
+        </Separator>
+
+        <Separator HorizontalAlignment="Left" Margin="652,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="312">
+            <Separator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Separator.RenderTransform>
+        </Separator>
+
+        <Label Content="SEND BODY" HorizontalAlignment="Left" Margin="226,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="77"/>
+        
+        <Separator HorizontalAlignment="Left" Margin="308,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="154">
+            <Separator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Separator.RenderTransform>
+        </Separator>
+        
+        <Label Content="RESPONSE DATA REQUEST" HorizontalAlignment="Left" Margin="983,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="156"/>
+        
+        <Separator HorizontalAlignment="Left" Margin="1144,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="54">
+            <Separator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Separator.RenderTransform>
+        </Separator>
+
     </Grid>
-    <Label Content="SEND" HorizontalAlignment="Left" Margin="32,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="42"/>
-    <Label Content="RESPONSE" HorizontalAlignment="Left" Margin="484,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="67"/>
-    <Separator HorizontalAlignment="Left" Margin="79,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="385">
-        <Separator.RenderTransform>
-            <TransformGroup>
-                <ScaleTransform ScaleY="-1"/>
-                <SkewTransform/>
-                <RotateTransform/>
-                <TranslateTransform/>
-            </TransformGroup>
-        </Separator.RenderTransform>
-    </Separator>
-    <Separator HorizontalAlignment="Left" Margin="551,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="655">
-        <Separator.RenderTransform>
-            <TransformGroup>
-                <ScaleTransform ScaleY="-1"/>
-                <SkewTransform/>
-                <RotateTransform/>
-                <TranslateTransform/>
-            </TransformGroup>
-        </Separator.RenderTransform>
-    </Separator>
-    <Label Content="CURL:" HorizontalAlignment="Left" Margin="210,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.237,0.477" Width="42"/>
-<TextBox Name="BoxCurl" HorizontalAlignment="Left" Margin="257,59,0,0" TextWrapping="Wrap" Text="curl https://jsonplaceholder.typicode.com/posts" VerticalAlignment="Top" Width="716" Height="37" />
-
-</Grid>
 </Window>
     
