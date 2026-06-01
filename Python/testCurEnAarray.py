@@ -8,8 +8,6 @@ ips = [
     '{\\"title\\": \\"foo\\", \\"body\\": \\"bar\\",\\"userId\\": 3}'
 ]
 
-
-
 for ip in ips:
 
     comando = f"""curl -X POST \"https://jsonplaceholder.typicode.com/posts\" -H \"Content-Type: application/json\" -d \"{ip}\" --connect-timeout 1 --max-time 3 """
@@ -39,3 +37,5 @@ for ip in ips:
     #  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
     #  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
     #100   108  100    65  100    43    219    145 --:--:-- --:--:-- --:--:--   366\n')
+
+

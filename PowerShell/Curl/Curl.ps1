@@ -56,7 +56,23 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
                             setFormulary($true ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false, $false) 
                         }
 
-            "SND_GET_POST" {
+            "GET" {
+                            (clearFormulary)
+                            setFormulary($true ,$true ,$true ,$false ,$false ,$false ,$true ,$true ,$true ,$false, $false) 
+                        }
+            "POST" {
+                            (clearFormulary)
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
+                        }
+            "PATCH" {
+                            (clearFormulary)
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
+                        }
+            "PUT" {
+                            (clearFormulary)
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
+                        }
+            "DELETE" {
                             (clearFormulary)
                             setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
                         }
@@ -114,15 +130,21 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
         
         switch($CmbMethod.SelectedItem.Content){
 
-            "NO"  { setArrayStatusForm("APAGADO") }
+            "NO"     { setArrayStatusForm("APAGADO")     }
+       
+            "GET"    { setArrayStatusForm("GET")         }
+      
+            "POST"   { setArrayStatusForm("POST")        }
+     
+            "PATCH"  { setArrayStatusForm("PATCH")       }
+     
+            "PUT"    { setArrayStatusForm("PUT")         }
+    
+            "DELETE" { setArrayStatusForm("DELETE")      }
+   
+            "CURL"   { setArrayStatusForm("SND_CURL")    }
 
-            "GET" { setArrayStatusForm("SND_GET_POST") }
-
-            "POST" { setArrayStatusForm("SND_GET_POST") }
-
-            "CURL" { setArrayStatusForm("SND_CURL") }
-
-            default { Write-Host "SELECCION - DEAFULT"  }
+            default  { Write-Host "SELECCION - DEAFULT"  }
         }
 
     })
@@ -160,67 +182,68 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
         }
         
     })
-
-    
-
     
     $BtnSend.Add_Click({
 
-        [hashtable]$paramsReturned = (buildRequest)
-        $responseArr = @{}
+        if($CmbMethod.SelectedItem.Content -eq "CURL" ){
 
-        try{
+            $responseCurl = Invoke-WebRequest  $TextCurl.text #@paramsReturned -ErrorAction Stop
 
-            $response = Invoke-WebRequest @paramsReturned -ErrorAction Stop
+            # Write-Host $responseCurl
 
-            $responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
+        }else{
 
-            $responseArr.Add("BodyResponse", $responseBody)
+            try{
 
-            $responseArr.Add("Status",       $response.StatusCode)
+                [hashtable]$paramsReturned = (buildRequest)
+                $responseArr = @{}
 
+                $response = Invoke-WebRequest @paramsReturned -ErrorAction Stop
 
-            $TxtBodyResponse.text = $responseArr.BodyResponse
+                $responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
 
+                $responseArr.Add("BodyResponse",      $responseBody)
+                $responseArr.Add("Status",            $response.StatusCode)
+                $responseArr.Add("StatusDescription", $response.StatusDescription)
+                $responseArr.Add("Headers",           $response.Headers)
+                $responseArr.Add("RawContent",        $response.RawContent)
 
-            Write-Host $response.StatusCode
+                #$responseArr.Session
+                #Write-Host $responseArr.RawContent
 
-        }catch{
+                $headersT = ""
+                $headersT += "========`n"
+                $headersT += "ESTATUS CODE: " + $responseArr.Status + " ::  " +  $responseArr.StatusDescription
+                $headersT += "`n========`n"
+                foreach($key in $responseArr.Headers.Keys){
+                    $headersT += "`n========`n"
+                    $headersT += $key
+                    $headersT += "`n"
+                    $headersT += $responseArr.Headers[$key]
+                    $headersT += "`n========`n"
+                }
+                $responseArr.Add("Session", $Session)
+                Write-Host $responseArr.Status
+                Write-Host $responseArr.StatusDescription
 
-            $msg = $_.Exception.Message
+                $TxtBodyResponse.text = $responseBody
+                $TxtHeadersRtrn.Text =  $headersT
+
+            }catch{
+
+                $msg = $_.Exception.Message
+
+            }
 
         }
 
-    })
-
-
-
-
-
-    
         
 
-    # $BtnSend
-    # $CmbBody
-    # $CmbHeaders
-    # $TextCurl
-    # $BtnSave
-    # $TxtHeadersRtrn
-    # $TxtBodyResponse
-    # $TxtHeadersReq
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
 
-
-
+    })
 
 $window.ShowDialog()
+
+
+# curl -X POST "https://jsonplaceholder.typicode.com/posts" -H "Content-Type: application/json" -d "{ "title": "foo", "body": "bar", "userId": 1}"   --connect-timeout 1  --max-time 3

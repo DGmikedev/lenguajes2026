@@ -19,10 +19,13 @@
             si se selecciona CURL se desactivan los controles y solo se mada 
             el Texto (comando curl) que se encuentra en el TEXT-BOX: TextCurl 
         --> 
-        <ComboBox Name="CmbMethod" HorizontalAlignment="Left" Margin="79,16,0,0" VerticalAlignment="Top" Width="134" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
+        <ComboBox Name="CmbMethod" HorizontalAlignment="Left" Margin="79,16,0,0" VerticalAlignment="Top" Width="134" RenderTransformOrigin="0.842,0.427" SelectedIndex="0"  >
             <ComboBoxItem Content="NO"  />
             <ComboBoxItem Content="GET"  />
             <ComboBoxItem Content="POST" />
+            <ComboBoxItem Content="PATCH" />
+            <ComboBoxItem Content="PUT" />
+            <ComboBoxItem Content="DELETE" />
             <ComboBoxItem Content="CURL" />
         </ComboBox>
 
@@ -51,8 +54,7 @@
         -->
         <ComboBox x:Name="CmbBody" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
             <ComboBoxItem Content="NO"  />
-            <ComboBoxItem Content="JSON"  />
-            <ComboBoxItem Content="XML" />
+            <ComboBoxItem Content="YES"  />
         </ComboBox>
 
         <!--LABEL: Edit H -->
@@ -66,8 +68,8 @@
             POWERSHELL use por defecto en el comando Invoke-WebRequest
         -->
         <ComboBox x:Name="CmbHeaders" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="1">
-            <ComboBoxItem Content="YES"  />
-            <ComboBoxItem Content="NO" />
+            <ComboBoxItem Content="NO"  />
+            <ComboBoxItem Content="YES" />
         </ComboBox>
   <!--LISTADO DE VARIABLES FORMULARIO
         CmbMethod
@@ -82,7 +84,7 @@
         <!--TEXT-BOX: TextCurl
             Aquí se introduce un comando curl ya formado para hacer la requets a la url objetivo (end-point)
         -->
-        <TextBox Name="TextCurl" HorizontalAlignment="Left" Margin="257,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="37" />
+        <TextBox Name="TextCurl" HorizontalAlignment="Left" Margin="257,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="37" AcceptsReturn="True"/>
         
 
         <!--BUTTON: SAVE
@@ -105,7 +107,7 @@
 
             <ScrollViewer Margin="964,0,0,0" VerticalScrollBarVisibility="Hidden">
 
-                <TextBox Name="TxtHeadersRtrn" TextWrapping="Wrap" Text="Headers Return Here!" Width="213" Height="403" AutomationProperties.HelpText="aquí se introducen las cabeceras que se envian alapi a consultar" IsReadOnly="True"/>
+                <TextBox Name="TxtHeadersRtrn" TextWrapping="Wrap" Text="Headers Return Here!" Width="213" Height="403" AutomationProperties.HelpText="aquí se introducen las cabeceras que se envian alapi a consultar" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
 
             </ScrollViewer>
 
