@@ -4,21 +4,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="616" Width="1248" ResizeMode="NoResize">
 
-      
-        
+
+
     <!-- Incia Formulario 
-        Grilla que encierra la aplicación 
-    -->
-    <Grid Background="#FEF3C6"> <!-- Color del Formulario -->
+    Grilla que encierra la aplicación 
+-->
+    <Grid Background="#FEF3C6">
+        <!-- Color del Formulario -->
 
         <!-- LABEL: Method -->
         <Label Content="Method" HorizontalAlignment="Left" Margin="22,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156"/>
 
         <!--COMBO: Method 
-            Selecciona que tipo de verbo se manda a la request ó 
-            si se selecciona CURL se desactivan los controles y solo se mada 
-            el Texto (comando curl) que se encuentra en el TEXT-BOX: TextCurl 
-        --> 
+        Selecciona que tipo de verbo se manda a la request ó 
+        si se selecciona CURL se desactivan los controles y solo se mada 
+        el Texto (comando curl) que se encuentra en el TEXT-BOX: TextCurl 
+    -->
         <ComboBox Name="CmbMethod" HorizontalAlignment="Left" Margin="79,16,0,0" VerticalAlignment="Top" Width="134" RenderTransformOrigin="0.842,0.427" SelectedIndex="0"  >
             <ComboBoxItem Content="NO"  />
             <ComboBoxItem Content="GET"  />
@@ -31,78 +32,88 @@
 
         <!-- LABEL: URL -->
         <Label Content="URL:" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.237,0.477"/>
-    
+
         <!--TEXT-BOX: TxtUrl 
-            Aquí se inserta la urle de la request a ejecutar
-        -->
-        <TextBox Name="TxtUrl" HorizontalAlignment="Left" Margin="257,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="37"/>
-    
+        Aquí se inserta la urle de la request a ejecutar
+    -->
+        <TextBox Name="TxtUrl" HorizontalAlignment="Left" Margin="257,4,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="43"/>
+
         <!--BUTTON: BtnSend
-            Este botón se usa para enviar la request a la url objetivo (end-point)
-        -->
-        <Button Name="BtnSend" Content="SEND" Margin="993,4,0,529" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="213" BorderBrush="#FFD0FAE5" Background="#7BF1A8"/>
+        Este botón se usa para enviar la request a la url objetivo (end-point)
+    -->
+        <Button Name="BtnSend" Content="SEND" Margin="983,4,0,529" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="223" BorderBrush="#FFD0FAE5" Background="#7BF1A8"/>
 
         <!--LABEL: Body -->
         <Label Content="Body" HorizontalAlignment="Left" Margin="25,47,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156"/>
 
-        
-        <!--COMBO: Body
-            En este combo se selecciona el cuerpo de la petición (Datos que usa la petición)
-            a enviar, al seleccionar alguna categoría se desbloque el TEXT-BOX: TextBody para
-            que se pueda ingresar el cuerop de la búsqueda, este cuerpo para esta version solo 
-            puede tener los formatos descritos en el componente (JSON y XML)
-        -->
-        <ComboBox x:Name="CmbBody" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
-            <ComboBoxItem Content="NO"  />
-            <ComboBoxItem Content="YES"  />
-        </ComboBox>
 
+        <!--COMBO: Body
+        En este combo se selecciona el cuerpo de la petición (Datos que usa la petición)
+        a enviar, al seleccionar alguna categoría se desbloque el TEXT-BOX: TextBody para
+        que se pueda ingresar el cuerop de la búsqueda, este cuerpo para esta version solo 
+        puede tener los formatos descritos en el componente (JSON y XML)
+    -->
+        <!--
+            <ComboBox x:Name="CmbBody" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
+                <ComboBoxItem Content="NO"  />
+                <ComboBoxItem Content="YES"  />
+            </ComboBox>
+        -->
+        <Button Name="BtnAddBody" Content="+ Body Param" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="84"/>
+        <Button Name="BtnMnsBody" Content="- Prm" HorizontalAlignment="Left" Margin="170,49,0,0" VerticalAlignment="Top" Width="43"/>
+        
+        
+        
         <!--LABEL: Edit H -->
-        <Label Content="Edit H" HorizontalAlignment="Left" Margin="25,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="42"/>
+        <Label Content="Head" HorizontalAlignment="Left" Margin="25,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="42"/>
 
         <!--COMBO: CmbHeaders
-            Aqui se habilita la agregación de cabeceras a enviar por la request,
-            por ejemplo paswords, tokens en el campo TEXT-BOX: HeadersText miestras
-            este seleccionado YES, de lo contrarí este TEXT-BOX se desactiva
-            evitando la edición de cabeceras y con ello solo se usaran las que
-            POWERSHELL use por defecto en el comando Invoke-WebRequest
+        Aqui se habilita la agregación de cabeceras a enviar por la request,
+        por ejemplo paswords, tokens en el campo TEXT-BOX: HeadersText miestras
+        este seleccionado YES, de lo contrarí este TEXT-BOX se desactiva
+        evitando la edición de cabeceras y con ello solo se usaran las que
+        POWERSHELL use por defecto en el comando Invoke-WebRequest
+    -->
+        <!--
+            <ComboBox x:Name="CmbHeaders" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="1">
+                <ComboBoxItem Content="NO"  />
+                <ComboBoxItem Content="YES" />
+            </ComboBox>
         -->
-        <ComboBox x:Name="CmbHeaders" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="1">
-            <ComboBoxItem Content="NO"  />
-            <ComboBoxItem Content="YES" />
-        </ComboBox>
-  <!--LISTADO DE VARIABLES FORMULARIO
-        CmbMethod
-        TxtUrl
-        BtnSend
-        CmbBody
-        CmbHeaders
-        -->
+        <Button Name="BtnAddHeader" Content="+ Head Param" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="84"/>
+        <Button Name="BtnMnsHead" Content="- Prm" HorizontalAlignment="Left" Margin="170,87,0,0" VerticalAlignment="Top" Width="43"/>
+        <!--LISTADO DE VARIABLES FORMULARIO
+    CmbMethod
+    TxtUrl
+    BtnSend
+    CmbBody
+    CmbHeaders
+    -->
         <!-- LABEL: CURL -->
         <Label Content="CURL:" HorizontalAlignment="Left" Margin="210,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.237,0.477" Width="42"/>
 
         <!--TEXT-BOX: TextCurl
-            Aquí se introduce un comando curl ya formado para hacer la requets a la url objetivo (end-point)
-        -->
-        <TextBox Name="TextCurl" HorizontalAlignment="Left" Margin="257,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="37" AcceptsReturn="True"/>
-        
+        Aquí se introduce un comando curl ya formado para hacer la requets a la url objetivo (end-point)
+    -->
+        <TextBox Name="TextCurl" HorizontalAlignment="Left" Margin="257,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="716" Height="69" AcceptsReturn="True"/>
+
 
         <!--BUTTON: SAVE
-            Este botón guarda los parametros usados para hacer la request
-            NOTA: Los datos que guarda es la búsqueda con formato de comando cUrl que
-            salva los datos:
-                * URL
-                * MÉTODO
-                * CABECERAS
-                * CUERPO
-                * CUERPO DE LA RESPONSE  DE LA REQUEST
-                * DATOS DEL RESPONSE DE LA REQUEST
-        -->
-        <Button x:Name="BtnSave" Content="SAVE" Margin="993,76,0,459" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="213" BorderBrush="#FFFEF9C2" Background="#FF8904"/>
+        Este botón guarda los parametros usados para hacer la request
+        NOTA: Los datos que guarda es la búsqueda con formato de comando cUrl que
+        salva los datos:
+            * URL
+            * MÉTODO
+            * CABECERAS
+            * CUERPO
+            * CUERPO DE LA RESPONSE  DE LA REQUEST
+            * DATOS DEL RESPONSE DE LA REQUEST
+    -->
+        <Button x:Name="BtnSave" Content="SAVE" Margin="1099,59,0,476" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="107" BorderBrush="#FFFEF9C2" Background="#FF8904"/>
 
         <!--GRILLA QUE CONTIENE LOS TEXT-BOX´s EDITABLES
-            SEND HEADERS, SEN BODY, RESPONSE BODY REQUEST, RESPONSE DATA REQUEST
-        -->
+        SEND HEADERS, SEN BODY, RESPONSE BODY REQUEST, RESPONSE DATA REQUEST
+    -->
         <Grid Margin="22,160,32,10">
 
             <ScrollViewer Margin="964,0,0,0" VerticalScrollBarVisibility="Hidden">
@@ -130,11 +141,11 @@
             </ScrollViewer>
 
         </Grid>
-        
+
         <Label Content="SEND HEADERS" HorizontalAlignment="Left" Margin="32,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="98"/>
-        
+
         <Label Content="RESPONSE BODY REQUEST" HorizontalAlignment="Left" Margin="486,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="156"/>
-        
+
         <Separator HorizontalAlignment="Left" Margin="135,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="71">
 
             <Separator.RenderTransform>
@@ -159,7 +170,7 @@
         </Separator>
 
         <Label Content="SEND BODY" HorizontalAlignment="Left" Margin="226,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="77"/>
-        
+
         <Separator HorizontalAlignment="Left" Margin="308,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="154">
             <Separator.RenderTransform>
                 <TransformGroup>
@@ -170,9 +181,9 @@
                 </TransformGroup>
             </Separator.RenderTransform>
         </Separator>
-        
+
         <Label Content="RESPONSE DATA REQUEST" HorizontalAlignment="Left" Margin="983,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="156"/>
-        
+
         <Separator HorizontalAlignment="Left" Margin="1144,143,0,0" VerticalAlignment="Top" Height="8" RenderTransformOrigin="0.5,0.5" Width="54">
             <Separator.RenderTransform>
                 <TransformGroup>
@@ -183,7 +194,10 @@
                 </TransformGroup>
             </Separator.RenderTransform>
         </Separator>
-
+        <Button Name="BtnNewCollection" Content="NEW COLLECTION" Margin="983,59,0,476" RenderTransformOrigin="0.494,-0.037" HorizontalAlignment="Left" Width="111" BorderBrush="#FFFEF9C2" Background="#FFF0F13D"/>
+        <Label Content="Collection: " HorizontalAlignment="Left" Margin="983,110,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="65"/>
+        <Label Content=". . ." HorizontalAlignment="Left" Margin="1053,108,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="153"/>
     </Grid>
+
 </Window>
     

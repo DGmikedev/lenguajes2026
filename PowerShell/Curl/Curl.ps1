@@ -21,19 +21,25 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 #>
     function setFormulary($status){
 
-        $CmbMethod.IsEnabled       = $status[0]
-        $TxtUrl.IsEnabled          = $status[1]
-        $BtnSend.IsEnabled         = $status[2]
-        $CmbBody.IsEnabled         = $status[3]
-        $CmbHeaders.IsEnabled      = $status[4]
-        $TextCurl.IsEnabled        = $status[5]
-        $BtnSave.IsEnabled         = $status[6]
-        $TxtHeadersRtrn.IsEnabled  = $status[7]
-        $TxtBodyResponse.IsEnabled = $status[8]
-        $TxtBodyReq.IsEnabled      = $status[9]
-        $TxtHeadersReq.IsEnabled   = $status[10]
+        $CmbMethod.IsEnabled         = $status[0]
+        $TxtUrl.IsEnabled            = $status[1]
+        $BtnSend.IsEnabled           = $status[2]
+        #$CmbBody.IsEnabled           = $status[3]
+        #$CmbHeaders.IsEnabled        = $status[4]
+        $BtnAddBody.IsEnabled        = $status[3]
+        $BtnAddHeader.IsEnabled      = $status[4]
+        $TextCurl.IsEnabled          = $status[5]
+        $BtnSave.IsEnabled           = $status[6]
+        $TxtHeadersRtrn.IsEnabled    = $status[7]
+        $TxtBodyResponse.IsEnabled   = $status[8]
+        $TxtBodyReq.IsEnabled        = $status[9]
+        $TxtHeadersReq.IsEnabled     = $status[10]
+        $BtnMnsHead.IsEnabled        = $status[11]  
+        $BtnMnsBody.IsEnabled        = $status[12]
+        $BtnNewCollection.IsEnabled  = $status[13]
 
     }
+
     function clearFormulary(){
     
         $TxtUrl.Text = ""
@@ -42,51 +48,74 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
         $TxtBodyResponse.Text = ""
         $TxtBodyReq.Text = ""
         $TxtHeadersReq.Text = ""
-        $CmbBody.SelectedIndex = 0
-        $CmbHeaders.SelectedIndex = 0
+        #$CmbBody.SelectedIndex = 0
+        #$CmbHeaders.SelectedIndex = 0
 
     }
 
+    <#  Habilita o deshabilita los componentes de formulario 
+        dependiendo del estado que requiera el request
+    #>
     function setArrayStatusForm($setForm){
 
-        switch ($setForm) {
+        # $CmbMethod.IsEnabled         = $status[0]
+        # $TxtUrl.IsEnabled            = $status[1]
+        # $BtnSend.IsEnabled           = $status[2]
+        # $BtnAddBody.IsEnabled        = $status[3]
+        # $BtnAddHeader.IsEnabled      = $status[4]
+        # $TextCurl.IsEnabled          = $status[5]
+        # $BtnSave.IsEnabled           = $status[6]
+        # $TxtHeadersRtrn.IsEnabled    = $status[7]
+        # $TxtBodyResponse.IsEnabled   = $status[8]
+        # $TxtBodyReq.IsEnabled        = $status[9]
+        # $TxtHeadersReq.IsEnabled     = $status[10]
+        # $BtnMnsHead.IsEnabled        = $status[11]
+        # $BtnMnsBody.IsEnabled        = $status[12]
+        # $BtnNewCollection.IsEnabled  = $status[13]
 
+        switch ($setForm) {
+                                    
             "APAGADO"   { 
                             (clearFormulary)
-                            setFormulary($true ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false, $false) 
+                                        #[0]    [1]     [2]     [3]     [4]     [5]     [6]     [7]     [8]     [9]     [10]    [11]    [12]    [13]
+                            setFormulary($true ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false, $false, $false, $false, $false) 
                         }
-
+                                    
             "GET" {
                             (clearFormulary)
-                            setFormulary($true ,$true ,$true ,$false ,$false ,$false ,$true ,$true ,$true ,$false, $false) 
+                                        #[0]    [1]    [2]    [3]     [4]     [5]     [6]    [7]   [8]     [9]     [10]    [11]    [12]    [13]
+                            setFormulary($true ,$true ,$true ,$false ,$false ,$false ,$true ,$true ,$true ,$false, $false, $false, $false, $true) 
                         }
             "POST" {
                             (clearFormulary)
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
+                                        #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true, $true) 
                         }
             "PATCH" {
                             (clearFormulary)
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
+                                        #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true, $true) 
                         }
             "PUT" {
                             (clearFormulary)
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
+                                        #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true, $true) 
                         }
             "DELETE" {
                             (clearFormulary)
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false) 
+                                        #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true, $true) 
                         }
-
             "SND_CURL"  { 
                             (clearFormulary)
-                            setFormulary($true ,$false ,$true ,$false ,$false ,$true ,$true ,$true ,$true ,$false, $false) 
+                                        #[0]    [1]     [2]    [3]    [4]     [5]     [6]    [7]     [8]     [9]     [10]    [11]    [12]    [13]
+                            setFormulary($true ,$false ,$true ,$false ,$false ,$true ,$true ,$false ,$false ,$false, $false, $false, $false, $true) 
                         }
 
             default { 
                     Write-Host "ATENCION CON SELECCION: " $setForm      -ForeigroundColor Red
             }
         }
-
     }
 
     function buildRequest(){
@@ -110,14 +139,19 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
     $CmbMethod       = $window.FindName("CmbMethod")
     $TxtUrl          = $window.FindName("TxtUrl")
     $BtnSend         = $window.FindName("BtnSend")
-    $CmbBody         = $window.FindName("CmbBody")
-    $CmbHeaders      = $window.FindName("CmbHeaders")
+    #$CmbBody         = $window.FindName("CmbBody")
+    #$CmbHeaders      = $window.FindName("CmbHeaders")
     $TextCurl        = $window.FindName("TextCurl")
     $BtnSave         = $window.FindName("BtnSave")
     $TxtHeadersRtrn  = $window.FindName("TxtHeadersRtrn")
     $TxtBodyResponse = $window.FindName("TxtBodyResponse")
     $TxtBodyReq      = $window.FindName("TxtBodyReq")
     $TxtHeadersReq   = $window.FindName("TxtHeadersReq")
+    $BtnAddBody      = $window.FindName("BtnAddBody")
+    $BtnAddHeader    = $window.FindName("BtnAddHeader")
+    $BtnMnsHead      = $window.FindName("BtnMnsHead")
+    $BtnMnsBody      = $window.FindName("BtnMnsBody")
+    $BtnNewCollection= $window.FindName("BtnNewCollection")
 
     <#  PRIMER DESPLIEGUE DE FORMULARIO 
         TODO APAGADO
@@ -149,7 +183,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
     })
 
-    $CmbBody.Add_SelectionChanged({
+    <# $CmbBody.Add_SelectionChanged({
 
         switch($CmbBody.SelectedItem.Content){
             "YES"   { 
@@ -164,8 +198,9 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
             default {}
         }
         
-    })
+    }) #>
 
+    <#
     $CmbHeaders.Add_SelectionChanged({
 
         switch($CmbHeaders.SelectedItem.Content){
@@ -181,27 +216,58 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
             default {}
         }
         
-    })
+    }) #>
     
     $BtnSend.Add_Click({
 
+        $responseArr = @{}
+
         if($CmbMethod.SelectedItem.Content -eq "CURL" ){
 
-            $responseCurl = Invoke-WebRequest  $TextCurl.text #@paramsReturned -ErrorAction Stop
+            $cUrl = " $($TextCurl.text) "
 
-            # Write-Host $responseCurl
+            $Invoke = Invoke-Curl2PS $cUrl 
+
+            $response = Invoke-WebRequest @Invoke
+
+            $responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
+            $responseArr.Add("BodyResponse",      $responseBody)
+            $responseArr.Add("Status",            $response.StatusCode)
+            $responseArr.Add("StatusDescription", $response.StatusDescription)
+            $responseArr.Add("Headers",           $response.Headers)
+            $responseArr.Add("RawContent",        $response.RawContent)
+
+            #$responseArr.Session
+            #Write-Host $responseArr.RawContent
+
+            $headersT = ""
+            $headersT += "========`n"
+            $headersT += "ESTATUS CODE: " + $responseArr.Status + " ::  " +  $responseArr.StatusDescription
+            $headersT += "`n========`n"
+            foreach($key in $responseArr.Headers.Keys){
+                $headersT += "`n========`n"
+                $headersT += $key
+                $headersT += "`n"
+                $headersT += $responseArr.Headers[$key]
+                $headersT += "`n========`n"
+            }
+            $responseArr.Add("Session", $Session)
+            Write-Host $responseArr.Status
+            Write-Host $responseArr.StatusDescription
+            $TxtBodyResponse.text = $responseBody
+            $TxtHeadersRtrn.Text =  $headersT
+
+
 
         }else{
 
             try{
 
                 [hashtable]$paramsReturned = (buildRequest)
-                $responseArr = @{}
 
                 $response = Invoke-WebRequest @paramsReturned -ErrorAction Stop
 
                 $responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
-
                 $responseArr.Add("BodyResponse",      $responseBody)
                 $responseArr.Add("Status",            $response.StatusCode)
                 $responseArr.Add("StatusDescription", $response.StatusDescription)
@@ -237,13 +303,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
         }
 
-        
-
-        
-
     })
 
 $window.ShowDialog()
 
-
-# curl -X POST "https://jsonplaceholder.typicode.com/posts" -H "Content-Type: application/json" -d "{ "title": "foo", "body": "bar", "userId": 1}"   --connect-timeout 1  --max-time 3
