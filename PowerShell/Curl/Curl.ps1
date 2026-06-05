@@ -1,11 +1,16 @@
 Add-Type -AssemblyName PresentationFramework
 
-[xml]$xaml = Get-Content ".\window.xaml" -Raw
 
+<#
+    lectura de archivos xalm´s 
+    para la creación de las ventanas
+    del programa 
+#>
+
+<# Main window #>
+[xml]$xaml  = Get-Content ".\window.xaml"  -Raw
 $reader = New-Object System.Xml.XmlNodeReader $xaml
-
 $window = [Windows.Markup.XamlReader]::Load($reader)
-
 
 <#
     Configuración de las variables 
@@ -89,7 +94,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
             "POST" {
                             (clearFormulary)
                                         #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true, $true) 
+                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $true, $true, $true, $true) 
                         }
             "PATCH" {
                             (clearFormulary)
@@ -132,6 +137,11 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
         return $params
 
+    }
+
+
+    function showMessage($message){
+        [System.Windows.MessageBox]::Show($message)
     }
 
     <#   Traduciendo Formulario (WFP) - POWERSHELL    #>
@@ -182,6 +192,81 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
         }
 
     })
+
+    ######################################################################
+    ######################################################################
+    # Esta parte se debe de pasar a otro
+
+    # archivo donde se inicializen los componenetes
+
+    $script:HeadersParams = New-Object System.Collections.Generic.List[Object]
+    $script:HeadersParamsTMP = ""
+    
+    $BtnAddHeader.Add_Click({
+
+        <# Add Header Param window #>
+        [xml]$xalm2 = get-Content ".\windowAddHeader.xaml" -Raw
+        $reader2 = New-Object System.Xml.XmlNodereader $xalm2
+        $windowHeader = [Windows.Markup.XamlReader]::Load($reader2)
+
+        $CmbParamHead      = $windowHeader.FindName("CmbParamHead")
+        $TxtValueHeader    = $windowHeader.FindName("TxtValueHeader")
+        $BtnSetValueHeader = $windowHeader.FindName("BtnSetValueHeader")
+
+        $BtnSetValueHeader.Add_Click({
+
+            # Validación de parametros ajustados
+
+            if( $CmbParamHead.SelectedItem.Content -eq "PARAM" )
+            {
+
+                showMessage("SELECCIONE UN METODO PARA EL ENCABEZADO DEL REQUEST")
+
+            }
+            elseif($TxtValueHeader.Text -eq "")
+            {
+
+                showMessage("INGRESE EL VALOR PARA EL PARAMETRO ELEGIDO")
+
+            }else{
+
+                
+                
+                $TxtHeadersReq.Text = ""
+
+                
+                $script:HeadersParams.Add([PSCustomObject]@{
+
+                    Key   = "$($CmbParamHead.SelectedItem.Content)"
+                    
+                    Value = "$($TxtValueHeader.Text)"
+
+                })
+
+                $CmbParamHead.SelectedIndex = 0
+                $TxtValueHeader.Text = ""
+
+                foreach($item in $script:HeadersParams){
+                    $script:HeadersParamsTMP += "{`n $($item.Key) : `n $($item.Value) `n}`n=============`n"
+                    $TxtHeadersReq.Text += $script:HeadersParamsTMP
+                    $script:HeadersParamsTMP = ""
+               }
+                
+                
+            }
+
+        }) #BtnSetValueHeader
+
+        $windowHeader.ShowDialog()
+
+    })  # Add BtnAddHeader
+
+
+
+    
+    #######################################################################
+    #######################################################################
+
 
     <# $CmbBody.Add_SelectionChanged({
 
@@ -305,5 +390,5 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
     })
 
-$window.ShowDialog()
+$window.showDialog()
 
