@@ -12,6 +12,11 @@ Add-Type -AssemblyName PresentationFramework
 $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
+
+$script:HeadersParams = New-Object System.Collections.Generic.List[Object]
+$script:HeadersParamsTMP = ""
+$script:temporalP = New-Object System.Collections.Generic.List[Object]
+
 <#
     Configuración de las variables 
     del ajuste de formulario:
@@ -199,8 +204,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
     # archivo donde se inicializen los componenetes
 
-    $script:HeadersParams = New-Object System.Collections.Generic.List[Object]
-    $script:HeadersParamsTMP = ""
+  
     
     $BtnAddHeader.Add_Click({
 
@@ -231,7 +235,6 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
             }else{
 
                 
-                
                 $TxtHeadersReq.Text = ""
 
                 
@@ -261,47 +264,69 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
     })  # Add BtnAddHeader
 
+    $BtnMnsHead.Add_Click({
 
+        [xml]$xaml3 = Get-Content ".\windowRemovHeader.xaml" -Raw 
 
-    
-    #######################################################################
-    #######################################################################
+        $reader3 = New-Object System.Xml.XmlNodereader $xaml3
 
+        $windowRmvHeaderPrm = [Windows.Markup.XamlReader]::Load($reader3)
 
-    <# $CmbBody.Add_SelectionChanged({
+        $SpParams = $windowRmvHeaderPrm.FindName("SpParams")
 
-        switch($CmbBody.SelectedItem.Content){
-            "YES"   { 
-                $TxtBodyReq.IsEnabled = $true
-                $TxtBodyReq.Text = ""
-             }
-            "NO"    {
-                $TxtBodyReq.Text = ""
-                $TxtBodyReq.IsEnabled = $false
-                
-            }
-            default {}
-        }
+        $script:temporalP = $script:HeadersParams
+       
+
+        $updateHeaderValues = $windowRmvHeaderPrm.findName("updateHeaderValues")
         
-    }) #>
+        foreach($param in $script:temporalP){
 
-    <#
-    $CmbHeaders.Add_SelectionChanged({
+            Write-Host $param.Key " -- "  $param.Value
 
-        switch($CmbHeaders.SelectedItem.Content){
-            "YES"   { 
-                $TxtHeadersReq.IsEnabled = $true
-                $TxtHeadersReq.Text = ""
-             }
-            "NO"    {
-                $TxtHeadersReq.Text = ""
-                $TxtHeadersReq.IsEnabled = $false
-                
+            $tmpItem = "{$($param.Key) :  $($param.Value)}"
+
+            $opcCheck = New-Object System.Windows.Controls.CheckBox
+
+            $opcCheck.Content = $tmpItem
+
+            $opcCheck.Margin = "5"
+
+            $opcCheck.IsChecked = $true
+
+            $opcCheck.Tag = @{
+                Key = $param.Key
+                Value = $param.Value
             }
-            default {}
+
+            $SpParams.Children.Add($opcCheck)
+
         }
+
+
+        $updateHeaderValues.Add_Click({
+
+            foreach($param in $SpParams.Children){
+
+                if($param -is [System.Windows.Controls.CheckBox] -and $param.IsChecked ){
+                    
+                    $key   = $param.Tag.Key
+
+                    $value = $param.Tag.Value
+
+                    Write-Host $key ":" $value
+
+                }
+
+                Write-Host "========================"
+            }
+
+            
+
+        })
+
+        $windowRmvHeaderPrm.ShowDialog()   | Out-Null
         
-    }) #>
+    })
     
     $BtnSend.Add_Click({
 
