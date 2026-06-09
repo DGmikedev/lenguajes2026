@@ -1,12 +1,5 @@
 Add-Type -AssemblyName PresentationFramework
 
-
-<#
-    lectura de archivos xalm´s 
-    para la creación de las ventanas
-    del programa 
-#>
-
 <# Main window #>
 [xml]$xaml  = Get-Content ".\window.xaml"  -Raw
 $reader = New-Object System.Xml.XmlNodeReader $xaml
@@ -17,26 +10,12 @@ $script:HeadersParams = New-Object System.Collections.Generic.List[Object]
 $script:HeadersParamsTMP = ""
 $script:temporalP = New-Object System.Collections.Generic.List[Object]
 
-<#
-    Configuración de las variables 
-    del ajuste de formulario:
-    
-    setFormulary( 
-                
-                $CmbMethod       $TxtUrl,          $BtnSend,
-                $CmbBody,        $CmbHeaders,      $TextCurl,        
-                $BtnSave,        $TxtHeadersRtrn,  $TxtBodyResponse, 
-                $TxtBodyReq,     $TxtHeadersReq 
-            )  
-#>
     function setFormulary($status){
 
         $CmbMethod.IsEnabled         = $status[0]
         $TxtUrl.IsEnabled            = $status[1]
         $BtnSend.IsEnabled           = $status[2]
-        #$CmbBody.IsEnabled           = $status[3]
-        #$CmbHeaders.IsEnabled        = $status[4]
-        $BtnAddBody.IsEnabled        = $status[3]
+        $CmbBody.IsEnabled           = $status[3]
         $BtnAddHeader.IsEnabled      = $status[4]
         $TextCurl.IsEnabled          = $status[5]
         $BtnSave.IsEnabled           = $status[6]
@@ -45,7 +24,7 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
         $TxtBodyReq.IsEnabled        = $status[9]
         $TxtHeadersReq.IsEnabled     = $status[10]
         $BtnMnsHead.IsEnabled        = $status[11]  
-        $BtnMnsBody.IsEnabled        = $status[12]
+        #$BtnMnsBody.IsEnabled        = $status[12]
         $BtnNewCollection.IsEnabled  = $status[13]
 
     }
@@ -58,8 +37,6 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
         $TxtBodyResponse.Text = ""
         $TxtBodyReq.Text = ""
         $TxtHeadersReq.Text = ""
-        #$CmbBody.SelectedIndex = 0
-        #$CmbHeaders.SelectedIndex = 0
 
     }
 
@@ -144,6 +121,14 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
 
     }
 
+    function setHeadersParam(){
+        foreach($item in $script:HeadersParams){
+            $script:HeadersParamsTMP += "{`n $($item.Key) : `n $($item.Value) `n}`n=============`n"
+            $TxtHeadersReq.Text += $script:HeadersParamsTMP
+            $script:HeadersParamsTMP = ""
+        }
+    }
+
 
     function showMessage($message){
         [System.Windows.MessageBox]::Show($message)
@@ -154,18 +139,16 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
     $CmbMethod       = $window.FindName("CmbMethod")
     $TxtUrl          = $window.FindName("TxtUrl")
     $BtnSend         = $window.FindName("BtnSend")
-    #$CmbBody         = $window.FindName("CmbBody")
-    #$CmbHeaders      = $window.FindName("CmbHeaders")
     $TextCurl        = $window.FindName("TextCurl")
     $BtnSave         = $window.FindName("BtnSave")
     $TxtHeadersRtrn  = $window.FindName("TxtHeadersRtrn")
     $TxtBodyResponse = $window.FindName("TxtBodyResponse")
     $TxtBodyReq      = $window.FindName("TxtBodyReq")
     $TxtHeadersReq   = $window.FindName("TxtHeadersReq")
-    $BtnAddBody      = $window.FindName("BtnAddBody")
+    $CmbBody         = $window.FindName("CmbBody")
     $BtnAddHeader    = $window.FindName("BtnAddHeader")
     $BtnMnsHead      = $window.FindName("BtnMnsHead")
-    $BtnMnsBody      = $window.FindName("BtnMnsBody")
+    #$BtnMnsBody      = $window.FindName("BtnMnsBody")
     $BtnNewCollection= $window.FindName("BtnNewCollection")
 
     <#  PRIMER DESPLIEGUE DE FORMULARIO 
@@ -207,6 +190,8 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
   
     
     $BtnAddHeader.Add_Click({
+    
+        <#
 
         <# Add Header Param window #>
         [xml]$xalm2 = get-Content ".\windowAddHeader.xaml" -Raw
@@ -249,12 +234,7 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
                 $CmbParamHead.SelectedIndex = 0
                 $TxtValueHeader.Text = ""
 
-                foreach($item in $script:HeadersParams){
-                    $script:HeadersParamsTMP += "{`n $($item.Key) : `n $($item.Value) `n}`n=============`n"
-                    $TxtHeadersReq.Text += $script:HeadersParamsTMP
-                    $script:HeadersParamsTMP = ""
-               }
-                
+                (setHeadersParam)
                 
             }
 
@@ -262,7 +242,11 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
 
         $windowHeader.ShowDialog()
 
+    
+
     })  # Add BtnAddHeader
+
+  
 
     $BtnMnsHead.Add_Click({
 
@@ -281,8 +265,6 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
         
         foreach($param in $script:temporalP){
 
-            Write-Host $param.Key " -- "  $param.Value
-
             $tmpItem = "{$($param.Key) :  $($param.Value)}"
 
             $opcCheck = New-Object System.Windows.Controls.CheckBox
@@ -294,8 +276,11 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
             $opcCheck.IsChecked = $true
 
             $opcCheck.Tag = @{
+
                 Key = $param.Key
+
                 Value = $param.Value
+
             }
 
             $SpParams.Children.Add($opcCheck)
@@ -305,6 +290,10 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
 
         $updateHeaderValues.Add_Click({
 
+            $TxtHeadersReq.Text = ""
+
+            $script:HeadersParams.Clear()
+
             foreach($param in $SpParams.Children){
 
                 if($param -is [System.Windows.Controls.CheckBox] -and $param.IsChecked ){
@@ -313,20 +302,27 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
 
                     $value = $param.Tag.Value
 
-                    Write-Host $key ":" $value
+                    $script:HeadersParams.Add( [PSCustomObject]@{
+
+                        Key = $key
+
+                        Value = $value
+
+                    })
 
                 }
 
-                Write-Host "========================"
             }
-
-            
+            (setHeadersParam)
+            $windowRmvHeaderPrm.Close()
 
         })
 
         $windowRmvHeaderPrm.ShowDialog()   | Out-Null
         
     })
+
+
     
     $BtnSend.Add_Click({
 
