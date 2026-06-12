@@ -2,7 +2,7 @@
 <Window 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="616" Width="1248" ResizeMode="NoResize">
+             Title="MainWindow" Height="616" Width="1248" ResizeMode="NoResize">
 
 
 
@@ -53,19 +53,22 @@
         que se pueda ingresar el cuerop de la búsqueda, este cuerpo para esta version solo 
         puede tener los formatos descritos en el componente (JSON y XML)
     -->
-        <!--
-            <ComboBox x:Name="CmbBody" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
-                <ComboBoxItem Content="NO"  />
-                <ComboBoxItem Content="YES"  />
-            </ComboBox>
-        -->
-        <Button Name="BtnAddBody" Content="+ Body Param" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="84"/>
-        <Button Name="BtnMnsBody" Content="- Prm" HorizontalAlignment="Left" Margin="170,49,0,0" VerticalAlignment="Top" Width="43"/>
+    <!--    
+        <ComboBox x:Name="CmbBody" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="134" RenderTransformOrigin="0.842,0.427" SelectedIndex="0">
+                <ComboBoxItem Content="SET"  />
+                <ComboBoxItem Content="JSON"  />
+                <ComboBoxItem Content="XML"  />
+        </ComboBox>
+    -->
         
-        
-        
+        <Button Name="BtnAddBody" Content="SET BODY" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="134"/>
+    <!--
+        <Button Name="BtnMnsBody" Content="XML" HorizontalAlignment="Left" Margin="151,49,0,0" VerticalAlignment="Top" Width="62"/>
+    -->
+
+
         <!--LABEL: Edit H -->
-        <Label Content="Head" HorizontalAlignment="Left" Margin="25,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="42"/>
+        <Label Content="Header" HorizontalAlignment="Left" Margin="25,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.228,0.156" Width="48"/>
 
         <!--COMBO: CmbHeaders
         Aqui se habilita la agregación de cabeceras a enviar por la request,
@@ -80,8 +83,8 @@
                 <ComboBoxItem Content="YES" />
             </ComboBox>
         -->
-        <Button Name="BtnAddHeader" Content="+ Head Param" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="84"/>
-        <Button Name="BtnMnsHead" Content="- Prm" HorizontalAlignment="Left" Margin="170,87,0,0" VerticalAlignment="Top" Width="43"/>
+        <Button Name="BtnAddHeader" Content="+ HEADER" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="67"/>
+        <Button Name="BtnMnsHead" Content="- HEADER" HorizontalAlignment="Left" Margin="151,87,0,0" VerticalAlignment="Top" Width="62"/>
         <!--LISTADO DE VARIABLES FORMULARIO
     CmbMethod
     TxtUrl
@@ -90,7 +93,7 @@
     CmbHeaders
     -->
         <!-- LABEL: CURL -->
-        <Label Content="CURL:" HorizontalAlignment="Left" Margin="210,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.237,0.477" Width="42"/>
+        <Label Content="cURL:" HorizontalAlignment="Left" Margin="220,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.237,0.477" Width="42"/>
 
         <!--TEXT-BOX: TextCurl
         Aquí se introduce un comando curl ya formado para hacer la requets a la url objetivo (end-point)
@@ -201,3 +204,12 @@
 
 </Window>
     
+
+    <!--
+    <Button Name="BtnAddBody" Content="JSON" HorizontalAlignment="Left" Margin="79,49,0,0" VerticalAlignment="Top" Width="67"/>
+    <Button Name="BtnMnsBody" Content="XML" HorizontalAlignment="Left" Margin="151,49,0,0" VerticalAlignment="Top" Width="62"/>
+
+    <Button Name="BtnAddHeader" Content="+ Header" HorizontalAlignment="Left" Margin="79,87,0,0" VerticalAlignment="Top" Width="67"/>
+    <Button Name="BtnMnsHead" Content="- Header" HorizontalAlignment="Left" Margin="151,87,0,0" VerticalAlignment="Top" Width="62"/>
+       
+    -->

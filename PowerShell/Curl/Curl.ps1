@@ -1,140 +1,142 @@
 Add-Type -AssemblyName PresentationFramework
 
+
+$location = $PSScriptRoot
+
+Import-Module "$location\Modules\Get-InvokeFromCurl.psm1"
+Import-Module "$location\Modules\Get-AddWindowHeader.psm1"
+Import-Module "$location\Modules\Get-RmvWindowHeader.psm1"
+Import-Module "$location\Modules\Get-SetWindowBody.psm1"
+Import-Module "$location\Infraestructure\showMessage.psm1"
+Import-Module "$location\Infraestructure\Get-TextFromHeadersReturn.psm1"
+
 <# Main window #>
-[xml]$xaml  = Get-Content ".\window.xaml"  -Raw
+[xml]$xaml  = Get-Content ".\Xamls\window.xaml"  -Raw
 $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 
+<# Varaibles #>
 $script:HeadersParams = New-Object System.Collections.Generic.List[Object]
-$script:HeadersParamsTMP = ""
-$script:temporalP = New-Object System.Collections.Generic.List[Object]
+$script:Bodyrequest = ""
+$script:responseArr    = @{}
+$script:responseBody   = @{}
 
-    function setFormulary($status){
 
-        $CmbMethod.IsEnabled         = $status[0]
-        $TxtUrl.IsEnabled            = $status[1]
-        $BtnSend.IsEnabled           = $status[2]
-        $CmbBody.IsEnabled           = $status[3]
-        $BtnAddHeader.IsEnabled      = $status[4]
-        $TextCurl.IsEnabled          = $status[5]
-        $BtnSave.IsEnabled           = $status[6]
-        $TxtHeadersRtrn.IsEnabled    = $status[7]
-        $TxtBodyResponse.IsEnabled   = $status[8]
-        $TxtBodyReq.IsEnabled        = $status[9]
-        $TxtHeadersReq.IsEnabled     = $status[10]
-        $BtnMnsHead.IsEnabled        = $status[11]  
-        #$BtnMnsBody.IsEnabled        = $status[12]
-        $BtnNewCollection.IsEnabled  = $status[13]
 
-    }
+function setFormulary($status){
+    $CmbMethod.IsEnabled         = $status[0]
+    $TxtUrl.IsEnabled            = $status[1]
+    $BtnSend.IsEnabled           = $status[2]
+    $BtnAddBody.IsEnabled        = $status[3]
+    #$CmbBody.IsEnabled          = $status[3]
+    $BtnAddHeader.IsEnabled      = $status[4]
+    $TextCurl.IsEnabled          = $status[5]
+    $BtnSave.IsEnabled           = $status[6]
+    $TxtHeadersRtrn.IsEnabled    = $status[7]
+    $TxtBodyResponse.IsEnabled   = $status[8]
+    $TxtBodyReq.IsEnabled        = $status[9]
+    $TxtHeadersReq.IsEnabled     = $status[10]
+    $BtnMnsHead.IsEnabled        = $status[11]  
+    $BtnNewCollection.IsEnabled  = $status[12]
+}
 
-    function clearFormulary(){
-    
-        $TxtUrl.Text = ""
-        $TextCurl.Text = ""
-        $TxtHeadersRtrn.Text = ""
-        $TxtBodyResponse.Text = ""
-        $TxtBodyReq.Text = ""
-        $TxtHeadersReq.Text = ""
+function clearFormulary(){
+    $TxtUrl.Text = ""
+    $TextCurl.Text = ""
+    $TxtHeadersRtrn.Text = ""
+    $TxtBodyResponse.Text = ""
+    $TxtBodyReq.Text = ""
+    $TxtHeadersReq.Text = ""
+    $script:HeadersParamsTMP = ""
+    $script:responseArr.Clear()
+    $script:responseBody = ""
+}
 
-    }
+function setArrayStatusForm($setForm){
 
-    <#  Habilita o deshabilita los componentes de formulario 
-        dependiendo del estado que requiera el request
-    #>
-    function setArrayStatusForm($setForm){
 
-        # $CmbMethod.IsEnabled         = $status[0]
-        # $TxtUrl.IsEnabled            = $status[1]
-        # $BtnSend.IsEnabled           = $status[2]
-        # $BtnAddBody.IsEnabled        = $status[3]
-        # $BtnAddHeader.IsEnabled      = $status[4]
-        # $TextCurl.IsEnabled          = $status[5]
-        # $BtnSave.IsEnabled           = $status[6]
-        # $TxtHeadersRtrn.IsEnabled    = $status[7]
-        # $TxtBodyResponse.IsEnabled   = $status[8]
-        # $TxtBodyReq.IsEnabled        = $status[9]
-        # $TxtHeadersReq.IsEnabled     = $status[10]
-        # $BtnMnsHead.IsEnabled        = $status[11]
-        # $BtnMnsBody.IsEnabled        = $status[12]
-        # $BtnNewCollection.IsEnabled  = $status[13]
+    # $CmbMethod.IsEnabled         = $status[0]
+    # $TxtUrl.IsEnabled            = $status[1]
+    # $BtnSend.IsEnabled           = $status[2]
+    # $BtnAddBody.IsEnabled        = $status[3]
+    # $BtnAddHeader.IsEnabled      = $status[4]
+    # $TextCurl.IsEnabled          = $status[5]
+    # $BtnSave.IsEnabled           = $status[6]
+    # $TxtHeadersRtrn.IsEnabled    = $status[7]
+    # $TxtBodyResponse.IsEnabled   = $status[8]
+    # $TxtBodyReq.IsEnabled        = $status[9]
+    # $TxtHeadersReq.IsEnabled     = $status[10]
+    # $BtnMnsHead.IsEnabled        = $status[11]
+    # $BtnMnsBody.IsEnabled        = $status[12]
+    # $BtnNewCollection.IsEnabled  = $status[13]
 
-        switch ($setForm) {
+    switch ($setForm) {
                                     
-            "APAGADO"   { 
-                            (clearFormulary)
-                                        #[0]    [1]     [2]     [3]     [4]     [5]     [6]     [7]     [8]     [9]     [10]    [11]    [12]    [13]
-                            setFormulary($true ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false, $false, $false, $false, $false) 
-                        }
-                                    
-            "GET" {
-                            (clearFormulary)
-                                        #[0]    [1]    [2]    [3]     [4]     [5]     [6]    [7]   [8]     [9]     [10]    [11]    [12]    [13]
-                            setFormulary($true ,$true ,$true ,$false ,$false ,$false ,$true ,$true ,$true ,$false, $false, $false, $false, $true) 
-                        }
-            "POST" {
-                            (clearFormulary)
-                                        #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $true, $true, $true, $true) 
-                        }
-            "PATCH" {
-                            (clearFormulary)
-                                        #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true, $true) 
-                        }
-            "PUT" {
-                            (clearFormulary)
-                                        #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true, $true) 
-                        }
-            "DELETE" {
-                            (clearFormulary)
-                                        #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]   [13]
-                            setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true, $true) 
-                        }
-            "SND_CURL"  { 
-                            (clearFormulary)
-                                        #[0]    [1]     [2]    [3]    [4]     [5]     [6]    [7]     [8]     [9]     [10]    [11]    [12]    [13]
-                            setFormulary($true ,$false ,$true ,$false ,$false ,$true ,$true ,$false ,$false ,$false, $false, $false, $false, $true) 
-                        }
+        "APAGADO"   { 
+                        (clearFormulary)
+                                    #[0]    [1]     [2]     [3]     [4]     [5]     [6]     [7]     [8]     [9]     [10]    [11]    [12]  
+                        setFormulary($true ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false ,$false, $false, $false, $false) 
+                    }
+                                
+        "GET" {
+                        (clearFormulary)
+                                    #[0]    [1]    [2]    [3]     [4]     [5]     [6]    [7]   [8]     [9]     [10]    [11]    [12] 
+                        setFormulary($true ,$true ,$true ,$false ,$false ,$false ,$true ,$true ,$true ,$false, $false, $false, $true) 
+                    }
+        "POST" {
+                        (clearFormulary)
+                                    #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $true, $true, $true) 
+                    }
+        "PATCH" {
+                        (clearFormulary)
+                                    #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12] 
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true) 
+                    }
+        "PUT" {
+                        (clearFormulary)
+                                    #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true) 
+                    }
+        "DELETE" {
+                        (clearFormulary)
+                                    #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true) 
+                    }
+        "SND_CURL"  { 
+                        (clearFormulary)
+                                    #[0]    [1]     [2]    [3]    [4]     [5]     [6]    [7]    [8]    [9]     [10]   [11]    [12]
+                        setFormulary($true ,$false ,$true ,$false ,$false ,$true ,$true ,$true ,$true ,$false, $false, $false, $true) 
+                    }
 
-            default { 
-                    Write-Host "ATENCION CON SELECCION: " $setForm      -ForeigroundColor Red
-            }
+        default { 
+                Write-Host "ATENCION CON SELECCION: " $setForm      -ForeigroundColor Red
         }
     }
+}
 
-    function buildRequest(){
+function buildRequest(){
 
-        $params = @{}
+    $params = @{}
 
-        if($TxtBodyReq.Text -eq "YES"){
-            $params.Add( "Body" , $TxtBodyReq.Text)
-        }
+    if($TxtBodyReq.Text -eq "YES"){
 
-        $params.Add("Uri",              $TxtUrl.Text)
-        $params.Add("SessionVariable",  'Session')
-        $params.Add("Method",           $CmbMethod.SelectedItem.Content.ToString())
-
-        return $params
+        $params.Add( "Body" , $TxtBodyReq.Text)
 
     }
 
-    function setHeadersParam(){
-        foreach($item in $script:HeadersParams){
-            $script:HeadersParamsTMP += "{`n $($item.Key) : `n $($item.Value) `n}`n=============`n"
-            $TxtHeadersReq.Text += $script:HeadersParamsTMP
-            $script:HeadersParamsTMP = ""
-        }
-    }
+    $params.Add("Uri",              $TxtUrl.Text)
 
+    $params.Add("SessionVariable",  'Session')
 
-    function showMessage($message){
-        [System.Windows.MessageBox]::Show($message)
-    }
+    $params.Add("Method",           $CmbMethod.SelectedItem.Content.ToString())
 
-    <#   Traduciendo Formulario (WFP) - POWERSHELL    #>
+    return $params
+
+}
+
+<#  Starting Formulary Values  #>
 
     $CmbMethod       = $window.FindName("CmbMethod")
     $TxtUrl          = $window.FindName("TxtUrl")
@@ -145,16 +147,121 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
     $TxtBodyResponse = $window.FindName("TxtBodyResponse")
     $TxtBodyReq      = $window.FindName("TxtBodyReq")
     $TxtHeadersReq   = $window.FindName("TxtHeadersReq")
-    $CmbBody         = $window.FindName("CmbBody")
+    $BtnAddBody      = $window.FindName("BtnAddBody")
     $BtnAddHeader    = $window.FindName("BtnAddHeader")
     $BtnMnsHead      = $window.FindName("BtnMnsHead")
-    #$BtnMnsBody      = $window.FindName("BtnMnsBody")
     $BtnNewCollection= $window.FindName("BtnNewCollection")
 
-    <#  PRIMER DESPLIEGUE DE FORMULARIO 
-        TODO APAGADO
-    #>
+$BtnSend.Add_Click({
+
+    $script:responseBody = ""
+    $script:responseArr.Clear()
+
+    if($CmbMethod.SelectedItem.Content -eq "CURL" ){
+
+        $cUrl = "$($TextCurl.text)"
+
+        
+        <# Translate Curl to Invoke-WebRequest Params #>
+        $Invoke = Get-InvokeFromCurl -cUrl $cUrl
+
+        <# Get the request from Invoke  #>
+        $response = Invoke-WebRequest @Invoke
+
+        <# 
+            Translate to JSON To represent data in 
+            TextBox Response_Body
+        #>
+        $script:responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
+
+        <# Setting the body request value #>
+        $TxtBodyResponse.text = $script:responseBody
+
+        <# Make array whit data to show in TextBox Headers Return #>
+        $script:responseArr.Add("BodyResponse",      $script:responseBody)
+        $script:responseArr.Add("Status",            $response.StatusCode)
+        $script:responseArr.Add("StatusDescription", $response.StatusDescription)
+        $script:responseArr.Add("Headers",           $response.Headers)
+        $script:responseArr.Add("RawContent",        $response.RawContent)
+        $script:responseArr.Add("Session", $Session)
+
+        $TxtHeadersRtrn.Text = Get-TextFromHeadersReturn -responseArr $script:responseArr
+ 
+    }else{
+
+        try{
+
+            [hashtable]$paramsReturned = (buildRequest)
+
+            $response = Invoke-WebRequest @paramsReturned -ErrorAction Stop
+
+            $script:responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
+
+            $TxtBodyResponse.text = $script:responseBody
+
+            $script:responseArr.Add("BodyResponse",      $script:responseBody)
+            $script:responseArr.Add("Status",            $response.StatusCode)
+            $script:responseArr.Add("StatusDescription", $response.StatusDescription)
+            $script:responseArr.Add("Headers",           $response.Headers)
+            $script:responseArr.Add("RawContent",        $response.RawContent)
+
+            $TxtHeadersRtrn.Text = Get-TextFromHeadersReturn -responseArr $script:responseArr
+
+            }catch{
+
+                $msg = $_.Exception.Message
+                
+                showMessage($msg) 
+
+            }
+
+        }
+
+})
+
+$BtnAddBody.Add_Click({
+
+    $controls = @{
+
+        Bodyrequest = $Bodyrequest
+
+        TxtBodyReq = $TxtBodyReq
+
+     }
     
+    Get-SetWindowBody -Controls $controls
+
+})
+
+$BtnMnsHead.Add_Click({
+
+    $controls = @{
+
+        TxtHeadersReq = $TxtHeadersReq
+
+        HeadersParams = $script:HeadersParams
+
+    }
+
+    Get-RmvWindowHeader -controls $controls
+
+}) #$BtnMnsHead
+
+$BtnAddHeader.Add_Click({
+
+    $exportControls = @{
+
+        TxtHeadersReq = $TxtHeadersReq
+
+        HeadersParams = $script:HeadersParams
+
+    }
+
+    Get-AddWindowHeader -controls $exportControls
+ 
+})  # Add BtnAddHeader
+
+
     setArrayStatusForm("APAGADO")
 
 
@@ -181,235 +288,10 @@ $script:temporalP = New-Object System.Collections.Generic.List[Object]
 
     })
 
-    ######################################################################
-    ######################################################################
-    # Esta parte se debe de pasar a otro
 
-    # archivo donde se inicializen los componenetes
 
-  
-    
-    $BtnAddHeader.Add_Click({
-    
-        <#
+    $window.showDialog()
 
-        <# Add Header Param window #>
-        [xml]$xalm2 = get-Content ".\windowAddHeader.xaml" -Raw
-        $reader2 = New-Object System.Xml.XmlNodereader $xalm2
-        $windowHeader = [Windows.Markup.XamlReader]::Load($reader2)
-
-        $CmbParamHead      = $windowHeader.FindName("CmbParamHead")
-        $TxtValueHeader    = $windowHeader.FindName("TxtValueHeader")
-        $BtnSetValueHeader = $windowHeader.FindName("BtnSetValueHeader")
-
-        $BtnSetValueHeader.Add_Click({
-
-            # Validación de parametros ajustados
-
-            if( $CmbParamHead.SelectedItem.Content -eq "PARAM" )
-            {
-
-                showMessage("SELECCIONE UN METODO PARA EL ENCABEZADO DEL REQUEST")
-
-            }
-            elseif($TxtValueHeader.Text -eq "")
-            {
-
-                showMessage("INGRESE EL VALOR PARA EL PARAMETRO ELEGIDO")
-
-            }else{
-
-                
-                $TxtHeadersReq.Text = ""
-
-                
-                $script:HeadersParams.Add([PSCustomObject]@{
-
-                    Key   = "$($CmbParamHead.SelectedItem.Content)"
-                    
-                    Value = "$($TxtValueHeader.Text)"
-
-                })
-
-                $CmbParamHead.SelectedIndex = 0
-                $TxtValueHeader.Text = ""
-
-                (setHeadersParam)
-                
-            }
-
-        }) #BtnSetValueHeader
-
-        $windowHeader.ShowDialog()
-
-    
-
-    })  # Add BtnAddHeader
-
-  
-
-    $BtnMnsHead.Add_Click({
-
-        [xml]$xaml3 = Get-Content ".\windowRemovHeader.xaml" -Raw 
-
-        $reader3 = New-Object System.Xml.XmlNodereader $xaml3
-
-        $windowRmvHeaderPrm = [Windows.Markup.XamlReader]::Load($reader3)
-
-        $SpParams = $windowRmvHeaderPrm.FindName("SpParams")
-
-        $script:temporalP = $script:HeadersParams
-       
-
-        $updateHeaderValues = $windowRmvHeaderPrm.findName("updateHeaderValues")
-        
-        foreach($param in $script:temporalP){
-
-            $tmpItem = "{$($param.Key) :  $($param.Value)}"
-
-            $opcCheck = New-Object System.Windows.Controls.CheckBox
-
-            $opcCheck.Content = $tmpItem
-
-            $opcCheck.Margin = "5"
-
-            $opcCheck.IsChecked = $true
-
-            $opcCheck.Tag = @{
-
-                Key = $param.Key
-
-                Value = $param.Value
-
-            }
-
-            $SpParams.Children.Add($opcCheck)
-
-        }
-
-
-        $updateHeaderValues.Add_Click({
-
-            $TxtHeadersReq.Text = ""
-
-            $script:HeadersParams.Clear()
-
-            foreach($param in $SpParams.Children){
-
-                if($param -is [System.Windows.Controls.CheckBox] -and $param.IsChecked ){
-                    
-                    $key   = $param.Tag.Key
-
-                    $value = $param.Tag.Value
-
-                    $script:HeadersParams.Add( [PSCustomObject]@{
-
-                        Key = $key
-
-                        Value = $value
-
-                    })
-
-                }
-
-            }
-            (setHeadersParam)
-            $windowRmvHeaderPrm.Close()
-
-        })
-
-        $windowRmvHeaderPrm.ShowDialog()   | Out-Null
-        
-    })
-
-
-    
-    $BtnSend.Add_Click({
-
-        $responseArr = @{}
-
-        if($CmbMethod.SelectedItem.Content -eq "CURL" ){
-
-            $cUrl = " $($TextCurl.text) "
-
-            $Invoke = Invoke-Curl2PS $cUrl 
-
-            $response = Invoke-WebRequest @Invoke
-
-            $responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
-            $responseArr.Add("BodyResponse",      $responseBody)
-            $responseArr.Add("Status",            $response.StatusCode)
-            $responseArr.Add("StatusDescription", $response.StatusDescription)
-            $responseArr.Add("Headers",           $response.Headers)
-            $responseArr.Add("RawContent",        $response.RawContent)
-
-            #$responseArr.Session
-            #Write-Host $responseArr.RawContent
-
-            $headersT = ""
-            $headersT += "========`n"
-            $headersT += "ESTATUS CODE: " + $responseArr.Status + " ::  " +  $responseArr.StatusDescription
-            $headersT += "`n========`n"
-            foreach($key in $responseArr.Headers.Keys){
-                $headersT += "`n========`n"
-                $headersT += $key
-                $headersT += "`n"
-                $headersT += $responseArr.Headers[$key]
-                $headersT += "`n========`n"
-            }
-            $responseArr.Add("Session", $Session)
-            Write-Host $responseArr.Status
-            Write-Host $responseArr.StatusDescription
-            $TxtBodyResponse.text = $responseBody
-            $TxtHeadersRtrn.Text =  $headersT
-
-
-
-        }else{
-
-            try{
-
-                [hashtable]$paramsReturned = (buildRequest)
-
-                $response = Invoke-WebRequest @paramsReturned -ErrorAction Stop
-
-                $responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
-                $responseArr.Add("BodyResponse",      $responseBody)
-                $responseArr.Add("Status",            $response.StatusCode)
-                $responseArr.Add("StatusDescription", $response.StatusDescription)
-                $responseArr.Add("Headers",           $response.Headers)
-                $responseArr.Add("RawContent",        $response.RawContent)
-
-                #$responseArr.Session
-                #Write-Host $responseArr.RawContent
-
-                $headersT = ""
-                $headersT += "========`n"
-                $headersT += "ESTATUS CODE: " + $responseArr.Status + " ::  " +  $responseArr.StatusDescription
-                $headersT += "`n========`n"
-                foreach($key in $responseArr.Headers.Keys){
-                    $headersT += "`n========`n"
-                    $headersT += $key
-                    $headersT += "`n"
-                    $headersT += $responseArr.Headers[$key]
-                    $headersT += "`n========`n"
-                }
-                $responseArr.Add("Session", $Session)
-                Write-Host $responseArr.Status
-                Write-Host $responseArr.StatusDescription
-
-                $TxtBodyResponse.text = $responseBody
-                $TxtHeadersRtrn.Text =  $headersT
-
-            }catch{
-
-                $msg = $_.Exception.Message
-
-            }
-
-        }
-
-    })
-
-$window.showDialog()
-
+    <# To Test
+        curl -X POST "https://jsonplaceholder.typicode.com/posts"   -H "Content-Type: application/json; charset=UTF-8"   -d '{    "title": "foo",    "body": "bar",    "userId": 1}'
+    #>
