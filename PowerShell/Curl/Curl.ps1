@@ -29,7 +29,6 @@ function setFormulary($status){
     $TxtUrl.IsEnabled            = $status[1]
     $BtnSend.IsEnabled           = $status[2]
     $BtnAddBody.IsEnabled        = $status[3]
-    #$CmbBody.IsEnabled          = $status[3]
     $BtnAddHeader.IsEnabled      = $status[4]
     $TextCurl.IsEnabled          = $status[5]
     $BtnSave.IsEnabled           = $status[6]
@@ -67,9 +66,8 @@ function setArrayStatusForm($setForm){
     # $TxtBodyResponse.IsEnabled   = $status[8]
     # $TxtBodyReq.IsEnabled        = $status[9]
     # $TxtHeadersReq.IsEnabled     = $status[10]
-    # $BtnMnsHead.IsEnabled        = $status[11]
-    # $BtnMnsBody.IsEnabled        = $status[12]
-    # $BtnNewCollection.IsEnabled  = $status[13]
+    # $BtnMnsHead.IsEnabled        = $status[11]  
+    # $BtnNewCollection.IsEnabled  = $status[12]
 
     switch ($setForm) {
                                     
@@ -87,22 +85,22 @@ function setArrayStatusForm($setForm){
         "POST" {
                         (clearFormulary)
                                     #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]
-                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $true, $true, $true) 
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $true, $true, $true) 
                     }
         "PATCH" {
                         (clearFormulary)
                                     #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12] 
-                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true) 
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $false, $true, $true) 
                     }
         "PUT" {
                         (clearFormulary)
                                     #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]
-                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true) 
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $false, $true, $true) 
                     }
         "DELETE" {
                         (clearFormulary)
                                     #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]
-                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$false, $false, $true, $true) 
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $false, $true, $true) 
                     }
         "SND_CURL"  { 
                         (clearFormulary)

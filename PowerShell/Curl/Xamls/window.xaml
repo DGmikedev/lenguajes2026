@@ -133,7 +133,7 @@
 
             <ScrollViewer Margin="199,0,732,0" VerticalScrollBarVisibility="Hidden">
 
-                <TextBox Name="TxtBodyReq" TextWrapping="Wrap" Text="Body Here!" Width="231" Height="406" AutomationProperties.HelpText="Aquí se introducen el body de la consulta" AcceptsReturn="True"  />
+                <TextBox Name="TxtBodyReq" TextWrapping="Wrap" Text="Body Here!" Width="231" Height="406" AutomationProperties.HelpText="Aquí se introducen el body de la consulta" AcceptsReturn="True" IsReadOnly="True"  />
 
             </ScrollViewer>
 

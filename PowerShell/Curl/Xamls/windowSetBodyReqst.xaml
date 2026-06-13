@@ -2,13 +2,15 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
-         Title="SET BODY REQUEST" Height="409" Width="717" Background="WhiteSmoke" ResizeMode="NoResize">
-    <Grid>
-        <ScrollViewer Margin="0,43,0,95" VerticalScrollBarVisibility="Hidden">
-            <TextBox x:Name="TxtBodyReq" TextWrapping="Wrap" Text="" Width="638" Height="226" AcceptsReturn="True" SelectionBrush="#FFD74500" BorderBrush="#FF0129A2" VerticalAlignment="Top" />
-        </ScrollViewer>
-        <Label Content="INSERT BODY" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="381" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" FontWeight="Bold"/>
-        <Button x:Name="BtnSetValueHeader" Content="SET BODY REQUEST" HorizontalAlignment="Center" Margin="0,303,0,0" VerticalAlignment="Top" Width="632" Height="43"  FontWeight="Bold" FontSize="24" BorderBrush="#FFF7DEBE" Background="#FF375F2E" Foreground="#FFE6C00E"/>
+             Title="SET BODY REQUEST" Height="409" Width="717" Background="WhiteSmoke" ResizeMode="NoResize">
+<Grid>
+    <ScrollViewer Margin="0,43,0,95" VerticalScrollBarVisibility="Hidden">
+        <TextBox x:Name="TxtBodyReq" TextWrapping="Wrap" Text="" Width="638" Height="226" AcceptsReturn="True" SelectionBrush="#FFD74500" BorderBrush="#FF0129A2" VerticalAlignment="Top" />
+    </ScrollViewer>
+    <Label Content="INSERT BODY" HorizontalAlignment="Left" Margin="42,10,0,0" VerticalAlignment="Top" Width="113" Height="28" VerticalContentAlignment="Center" FontSize="14" FontWeight="Bold"/>
+    <Button x:Name="BtnSetValueHeader" Content="SET BODY REQUEST" HorizontalAlignment="Center" Margin="0,303,0,0" VerticalAlignment="Top" Width="632" Height="43"  FontWeight="Bold" FontSize="24" BorderBrush="#FFF7DEBE" Background="#FF375F2E" Foreground="#FFE6C00E"/>
+    <Label Content="MESSAGE:" HorizontalAlignment="Left" Margin="160,12,0,0" VerticalAlignment="Top" Width="74" FontWeight="Bold"/>
+    <TextBox x:Name="TxtMsgBody" HorizontalAlignment="Left" Margin="239,16,0,0" TextWrapping="Wrap" Text=".  .  ." VerticalAlignment="Top" Width="435" IsReadOnly="True"/>
 
-    </Grid>
+</Grid>
 </Window>
