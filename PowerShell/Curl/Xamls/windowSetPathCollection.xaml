@@ -1,0 +1,11 @@
+<Window x:Class="toPwerShelWPF.Window4"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:toPwerShelWPF"
+
+        Title="NEW COLLECTION" Height="367" Width="401" Background="WhiteSmoke">
+    <Grid>
+        <Button Content="SET PATH COLLECTION" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="381" Height="40"/>
+        <TextBox HorizontalAlignment="Center" Margin="0,55,0,0" TextWrapping="Wrap" Text="Path .  .  ." VerticalAlignment="Top" Width="381" Height="43" VerticalContentAlignment="Center"/>
+    </Grid>
+</Window>

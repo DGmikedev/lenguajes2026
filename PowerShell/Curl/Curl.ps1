@@ -90,17 +90,17 @@ function setArrayStatusForm($setForm){
         "PATCH" {
                         (clearFormulary)
                                     #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12] 
-                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $false, $true, $true) 
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $true, $true, $true) 
                     }
         "PUT" {
                         (clearFormulary)
                                     #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]
-                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $false, $true, $true) 
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $true, $true, $true) 
                     }
         "DELETE" {
                         (clearFormulary)
                                     #[0]    [1]    [2]    [3]    [4]    [5]     [6]    [7]    [8]    [9]     [10]    [11]   [12]
-                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $false, $true, $true) 
+                        setFormulary($true ,$true ,$true ,$true ,$true ,$false ,$true ,$true ,$true ,$true, $true, $true, $true) 
                     }
         "SND_CURL"  { 
                         (clearFormulary)
@@ -114,24 +114,46 @@ function setArrayStatusForm($setForm){
     }
 }
 
-function buildRequest(){
+function BuildCurl(){
 
-    $params = @{}
+    $ToCurl = "curl -X "
 
-    if($TxtBodyReq.Text -eq "YES"){
+    if($CmbMethod.SelectedItem.Content -eq "GET"){
 
-        $params.Add( "Body" , $TxtBodyReq.Text)
+        $ToCurl += " GET "
+
+        $ToCurl += " `"$($TxtUrl.Text)`" "
+
+        return $ToCurl
+
+    }else{
+
+        $ToCurl += " $($CmbMethod.SelectedItem.Content.ToString()) "
+
+        $ToCurl += " `"$($TxtUrl.Text)`" "
+
+        if($script:HeadersParams.Count -ne 0){
+
+            $script:HeadersParams | Foreach-Object({
+
+                $ToCurl += " -H `"$($_.Key): $($_.Value)`" "
+
+            })
+
+        }
+
+        if($TxtBodyReq.Text.Length -ne 0){
+
+            $BodyFix = $TxtBodyReq.Text -replace "\r?\n" , ""
+
+            $ToCurl += "-d `'$BodyFix`'"
+
+        }
+
+        return $ToCurl
 
     }
-
-    $params.Add("Uri",              $TxtUrl.Text)
-
-    $params.Add("SessionVariable",  'Session')
-
-    $params.Add("Method",           $CmbMethod.SelectedItem.Content.ToString())
-
-    return $params
-
+      
 }
 
 <#  Starting Formulary Values  #>
@@ -189,9 +211,12 @@ $BtnSend.Add_Click({
 
         try{
 
-            [hashtable]$paramsReturned = (buildRequest)
+            $Curl = (BuildCurl)
 
-            $response = Invoke-WebRequest @paramsReturned -ErrorAction Stop
+            <# Translate Curl to Invoke-WebRequest Params #>
+            $Invoke = Get-InvokeFromCurl -cUrl $cUrl
+
+            $response = Invoke-WebRequest @Invoke -ErrorAction Stop
 
             $script:responseBody = $response | ConvertFrom-JSON |ConvertTo-JSON -Depth 6
 
@@ -205,13 +230,13 @@ $BtnSend.Add_Click({
 
             $TxtHeadersRtrn.Text = Get-TextFromHeadersReturn -responseArr $script:responseArr
 
-            }catch{
+        }catch{
 
                 $msg = $_.Exception.Message
                 
                 showMessage($msg) 
 
-            }
+        }
 
         }
 
@@ -221,7 +246,7 @@ $BtnAddBody.Add_Click({
 
     $controls = @{
 
-        Bodyrequest = $Bodyrequest
+        Bodyrequest = $script:Bodyrequest
 
         TxtBodyReq = $TxtBodyReq
 
@@ -259,6 +284,12 @@ $BtnAddHeader.Add_Click({
  
 })  # Add BtnAddHeader
 
+$BtnNewCollection.Add_Click({
+
+    
+
+})
+
 
     setArrayStatusForm("APAGADO")
 
@@ -290,6 +321,4 @@ $BtnAddHeader.Add_Click({
 
     $window.showDialog()
 
-    <# To Test
-        curl -X POST "https://jsonplaceholder.typicode.com/posts"   -H "Content-Type: application/json; charset=UTF-8"   -d '{    "title": "foo",    "body": "bar",    "userId": 1}'
-    #>
+    
